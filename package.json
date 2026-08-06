@@ -1,0 +1,14 @@
+{
+  "name": "ju-brain",
+  "private": true,
+  "version": "1.0.0",
+  "description": "JU Housing HQ agent knowledge corpus — lint and quality checks",
+  "scripts": {
+    "check": "python3 scripts/check_knowledge.py",
+    "lint": "markdownlint-cli2 \"knowledge/**/*.md\" \"README.md\" \"AGENTS.md\" \"templates/**/*.md\"",
+    "test": "python3 scripts/check_knowledge.py"
+  },
+  "devDependencies": {
+    "markdownlint-cli2": "^0.18.1"
+  }
+}

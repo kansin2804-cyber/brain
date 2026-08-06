@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://juhousing.local/schemas/shorts_plan.schema.json",
+  "title": "SHORTS_PLAN",
+  "type": "object",
+  "required": [
+    "version",
+    "artifact",
+    "topic",
+    "hook",
+    "overlay_outline"
+  ],
+  "properties": {
+    "version": { "type": "string" },
+    "artifact": { "const": "SHORTS_PLAN" },
+    "from_agent": { "type": "string" },
+    "topic": { "type": "string" },
+    "hook": { "type": "string" },
+    "overlay_outline": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": { "type": "string" }
+    },
+    "overlay_lines": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": { "type": "string" }
+    },
+    "tone_notes": { "type": "string" },
+    "image_prompts": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": { "type": "string" }
+    },
+    "visual_stage_notes": { "type": "array" },
+    "brand_check_required": { "type": "boolean" },
+    "created_at": { "type": "string" }
+  },
+  "additionalProperties": true
+}
