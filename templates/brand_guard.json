@@ -1,0 +1,17 @@
+{
+  "version": "1.0",
+  "artifact": "BRAND_GUARD",
+  "from_agent": "ju_brand_guard",
+  "source_type": "copy",
+  "source_ref": "",
+  "approved": false,
+  "violations": [],
+  "revised_copy": "",
+  "checked_rules": [
+    "no_hanok_or_traditional_implication",
+    "no_unverified_savings_claims",
+    "no_lowest_price_promise",
+    "stage_accurate_visuals"
+  ],
+  "created_at": "2026-01-01T00:00:00+09:00"
+}

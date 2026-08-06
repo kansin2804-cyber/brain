@@ -1,0 +1,24 @@
+{
+  "version": "1.0",
+  "artifact": "SYNTHESIS_JSON",
+  "from_agent": "ju_orchestrator",
+  "domains_merged": ["estimate", "field", "marketing"],
+  "site_id": null,
+  "customer_id": null,
+  "common_denominator": {
+    "site": "양주 예시현장",
+    "customer": "김건축",
+    "construction_stage": "골조"
+  },
+  "priority_actions": [
+    {
+      "who": "ju_chief_field",
+      "what": "실측 일정 확정 후 견적 본부에 평수 회신",
+      "when": "48h",
+      "why": "견적 A/B 확정에 실측 필요"
+    }
+  ],
+  "conflicts": [],
+  "status": "ok",
+  "created_at": "2026-01-01T00:00:00+09:00"
+}

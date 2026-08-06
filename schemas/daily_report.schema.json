@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://juhousing.local/schemas/daily_report.schema.json",
+  "title": "DAILY_REPORT",
+  "type": "object",
+  "required": [
+    "version",
+    "artifact",
+    "from_agent",
+    "site_name",
+    "date",
+    "work_today",
+    "daily_report"
+  ],
+  "properties": {
+    "version": { "type": "string" },
+    "artifact": { "const": "DAILY_REPORT" },
+    "from_agent": { "type": "string" },
+    "to_agent": { "type": "string" },
+    "site_name": { "type": "string", "minLength": 1 },
+    "date": { "type": "string" },
+    "weather": { "type": "string" },
+    "temperature_c": { "type": ["number", "null"] },
+    "trade": { "type": "string" },
+    "crew": { "type": "object" },
+    "work_today": { "type": "string" },
+    "materials": { "type": "object" },
+    "issues": { "type": "array" },
+    "safety": { "type": "array" },
+    "plan_tomorrow": { "type": "string" },
+    "photos": { "type": "array" },
+    "daily_report": { "type": "string" },
+    "notify_estimate_chief": { "type": "boolean" },
+    "created_at": { "type": "string" }
+  },
+  "additionalProperties": true
+}
