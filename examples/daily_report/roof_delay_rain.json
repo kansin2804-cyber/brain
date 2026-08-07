@@ -1,0 +1,30 @@
+{
+  "version": "1.0",
+  "artifact": "DAILY_REPORT",
+  "from_agent": "ju_daily_report",
+  "to_agent": "ju_chief_field",
+  "site_name": "가평 설악 예시현장",
+  "date": "2026-08-07",
+  "weather": "폭우",
+  "temperature_c": 24,
+  "trade": "지붕 데크",
+  "crew": {
+    "direct": 3,
+    "subcontractor": 0
+  },
+  "work_today": "우천으로 지붕 데크 작업 중단. 방수 임시 양생·배수로 점검만 수행",
+  "materials": {
+    "received": [],
+    "used": ["방수 테이프", "임시 타포린"]
+  },
+  "issues": [
+    "연속 강우로 지붕 데크 1.5일 지연",
+    "북측 사면 배수 토사 유입 — 옹벽·배수 재검토 필요 (견적 범위 영향 가능)"
+  ],
+  "safety": ["미끄럼 주의 작업 중단", "임시 전기 차단 확인"],
+  "plan_tomorrow": "기상 회복 시 데크 재개. 오전까지 배수·옹벽 사진 기록 후 estimate-chief 공유",
+  "photos": ["slope_drainage.jpg", "temp_cover.jpg"],
+  "daily_report": "가평 설악 — 우천으로 지붕 작업 중단. 북측 배수 이슈 발견. 견적 범위 변경 가능성 있어 본부장 에스컬레이션.",
+  "notify_estimate_chief": true,
+  "created_at": "2026-08-07T16:40:00+09:00"
+}

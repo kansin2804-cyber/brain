@@ -1,0 +1,27 @@
+{
+  "version": "1.0",
+  "artifact": "DAILY_REPORT",
+  "from_agent": "ju_daily_report",
+  "to_agent": "ju_chief_field",
+  "site_name": "양주 옥정 예시현장",
+  "date": "2026-08-07",
+  "weather": "맑음",
+  "temperature_c": 31,
+  "trade": "골조",
+  "crew": {
+    "direct": 4,
+    "subcontractor": 2
+  },
+  "work_today": "2층 2x6 스터드 세우기 및 OSB 외벽 시스 70% 완료",
+  "materials": {
+    "received": ["2x6 KD SPF", "OSB 11mm"],
+    "used": ["2x6 KD SPF", "OSB 11mm", "앵커·타카못"]
+  },
+  "issues": [],
+  "safety": ["안전모·안전대 착용 확인", "개구부 임시난간 설치"],
+  "plan_tomorrow": "OSB 마감 후 지붕 데크 자재 반입",
+  "photos": ["framing_south.jpg", "osb_corner.jpg"],
+  "daily_report": "양주 옥정 — 2층 골조 순항. 2x6·OSB 진행. 이슈 없음. 명일 지붕 데크 준비.",
+  "notify_estimate_chief": false,
+  "created_at": "2026-08-07T17:00:00+09:00"
+}

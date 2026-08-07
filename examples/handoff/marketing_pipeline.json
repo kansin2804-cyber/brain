@@ -1,0 +1,36 @@
+{
+  "version": "1.0",
+  "artifact": "HANDOFF_JSON",
+  "from_agent": "ju_chief_marketing",
+  "to_agent": "ju_orchestrator",
+  "domain": "marketing",
+  "site_id": "gapyeong-seorak-40",
+  "customer_id": null,
+  "stage": "content_pipeline",
+  "summary": "쇼츠 '목조는 춥다?' 기획 완료 · 브랜드 감수 대기 · 현장 골조 컷 필요",
+  "payload": {
+    "campaign_summary": "단열 오해 해제 쇼츠 1편 + 블로그 FAQ 초안",
+    "content_pipeline": {
+      "shorts_planning": "done",
+      "shorts_editing": "ready",
+      "visual_director": "waiting_site_photos",
+      "brand_guard": "pending",
+      "blog_seo": "outline_ready"
+    },
+    "brand_status": {
+      "approved": false,
+      "pending_reason": "현장 골조 실사 컷 확보 전 Imagen만으로 진행할지 HQ 판단 필요"
+    },
+    "asks_from_peers": [
+      "field-chief: 2x6 골조 only 컷 2장 (완성 지붕·외장 비침 금지)",
+      "estimate-chief: 상담 CTA 멘트와 충돌 없는지 확인"
+    ]
+  },
+  "cross_domain_flags": {
+    "affects_field": true,
+    "affects_marketing": true,
+    "notes": "현장 지연 시 쇼츠 발행을 가상 컷으로 대체할지 HQ가 결정"
+  },
+  "priority": "normal",
+  "created_at": "2026-08-07T18:00:00+09:00"
+}

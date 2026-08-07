@@ -198,6 +198,28 @@
     "shorts_plan": "templates/shorts_plan.json",
     "brand_guard": "templates/brand_guard.json"
   },
+  "examples": {
+    "handoff": [
+      "examples/handoff/estimate_ab_ready.json",
+      "examples/handoff/field_scope_change.json",
+      "examples/handoff/marketing_pipeline.json"
+    ],
+    "synthesis": [
+      "examples/synthesis/hq_weekly_priorities.json"
+    ],
+    "daily_report": [
+      "examples/daily_report/framing_clear_day.json",
+      "examples/daily_report/roof_delay_rain.json"
+    ],
+    "shorts_plan": [
+      "examples/shorts/insulation_myth.json",
+      "examples/shorts/build_sequence.json"
+    ],
+    "brand_guard": [
+      "examples/brand_guard/reject_lowest_price.json",
+      "examples/brand_guard/approve_process_copy.json"
+    ]
+  },
   "schemas": {
     "handoff": "schemas/handoff.schema.json",
     "synthesis": "schemas/synthesis.schema.json",

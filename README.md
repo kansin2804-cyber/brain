@@ -14,10 +14,29 @@ npm install
 # 지식베이스 품질 검사 (금지표현·구조·매니페스트)
 npm run check
 
+# Control Tower 로드 순서 (shared → HQ/chief → specialist)
+python3 scripts/load_control_tower.py --agent ju_orchestrator --format paths
+python3 scripts/load_control_tower.py --domain estimate --with-examples handoff --format json
+python3 scripts/load_control_tower.py --agent ju_chief_field --with-examples daily_report --format bundle
+
 # 마크다운 스타일 린트 (선택)
 npm run lint
 ```
 
+### Control Tower 지식 로드
+
+`scripts/load_control_tower.py`는 `knowledge/manifest.json`을 읽어 **shared 먼저**, 이어서 HQ/chief → specialist/guide 순으로 경로를 만듭니다.
+
+| 플래그 | 의미 |
+|--------|------|
+| `--agent` | 로드할 에이전트 ID (필수, 또는 `--domain`) |
+| `--domain` | `estimate` / `field` / `marketing` / `shorts` 본부장(또는 도메인 루트) |
+| `--format paths\|json\|bundle` | 경로 목록 / JSON / 프롬프트 합본 |
+| `--with-examples` | `handoff,synthesis,daily_report,shorts_plan,brand_guard,all` |
+| `--examples-limit` | 그룹당 최대 예시 수 (기본 2) |
+| `--self-check` | shared-first · orchestrator→chiefs 포함 자가검증 |
+
+자세한 규칙: [`AGENTS.md`](AGENTS.md)
 ## 디렉터리 구조
 
 ```text
@@ -28,9 +47,11 @@ knowledge/
   marketing/   # 마케팅 본부
   shorts/      # Shorts 파이프라인
   shared/      # 회사·시공·비주얼 공통 규칙
+  manifest.json
 templates/     # HANDOFF / 일보 / 쇼츠 표준 JSON·MD 템플릿
 schemas/       # JSON Schema
-scripts/       # 품질 검사 자동화
+examples/      # few-shot 예시 JSON
+scripts/       # 품질 검사·Control Tower 로드 순서
 ```
 
 ## 에이전트 맵
@@ -93,7 +114,7 @@ shared (전 도메인 공통)
 ## 콘텐츠 작성 규칙
 
 - 한국어 단정·전문가 톤. 과장·허위 통계 금지.
-- 시공 정체성: **2x4 + OSB + platform framing**, 세라믹/섬유시멘트, 스탠딩심 메탈.
+- 시공 정체성: **2x6 + OSB + platform framing**, 세라믹/섬유시멘트, 스탠딩심 메탈.
 - 마케팅·이미지·대본은 `ju_brand_guard` / `ju_visual_rules`를 통과해야 함.
 - 새 에이전트 파일을 추가하면 **반드시** `knowledge/manifest.json`도 갱신.
 
