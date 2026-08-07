@@ -1,0 +1,43 @@
+{
+  "version": "1.0",
+  "artifact": "SYNTHESIS_JSON",
+  "from_agent": "ju_orchestrator",
+  "domains_merged": ["estimate", "field", "marketing"],
+  "site_id": "gapyeong-seorak-40",
+  "customer_id": "cust-park-2506",
+  "common_denominator": {
+    "site": "가평 설악 40평",
+    "customer": "박건축",
+    "construction_stage": "골조"
+  },
+  "priority_actions": [
+    {
+      "who": "ju_chief_estimate",
+      "what": "옹벽 보강 별도 라인 견적안을 24시간 내 초안",
+      "when": "24h",
+      "why": "현장 quality_flag가 계약 범위에 영향"
+    },
+    {
+      "who": "ju_chief_field",
+      "what": "북측 사면 배수·옹벽 보강 방침을 현장감독과 확정하고 고객 한 줄 보고",
+      "when": "48h",
+      "why": "안전·공기 리스크가 최우선"
+    },
+    {
+      "who": "ju_chief_marketing",
+      "what": "쇼츠 현장 컷 촬영을 보강 방침 확정 후로 연기. 그전까지는 공정-accurate Imagen 5컷으로 brand_guard 통과본만 준비",
+      "when": "72h",
+      "why": "미확정 현장 상태를 콘텐츠로 확정처럼 보이지 않게"
+    }
+  ],
+  "conflicts": [
+    {
+      "topic": "입주·콘텐츠 일정 vs 옹벽 보강",
+      "parties": ["ju_chief_field", "ju_chief_marketing", "ju_chief_estimate"],
+      "resolution": "안전·범위 확정이 콘텐츠·확정 견적보다 우선. 마케팅은 지연 고지 후 대체 컷 사용.",
+      "rework_artifacts": ["HANDOFF_JSON", "SHORTS_PLAN", "estimate options addendum"]
+    }
+  ],
+  "status": "needs_rework",
+  "created_at": "2026-08-07T19:00:00+09:00"
+}

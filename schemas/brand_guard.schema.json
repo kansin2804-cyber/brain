@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://juhousing.local/schemas/brand_guard.schema.json",
+  "title": "BRAND_GUARD",
+  "type": "object",
+  "required": [
+    "version",
+    "artifact",
+    "approved",
+    "violations"
+  ],
+  "properties": {
+    "version": { "type": "string" },
+    "artifact": { "const": "BRAND_GUARD" },
+    "from_agent": { "type": "string" },
+    "source_type": {
+      "type": "string",
+      "enum": ["copy", "script", "image_prompt", "blog", "other"]
+    },
+    "source_ref": { "type": "string" },
+    "approved": { "type": "boolean" },
+    "violations": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "revised_copy": { "type": "string" },
+    "checked_rules": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "created_at": { "type": "string" }
+  },
+  "additionalProperties": true
+}

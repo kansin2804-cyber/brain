@@ -1,0 +1,44 @@
+{
+  "version": "1.0",
+  "artifact": "HANDOFF_JSON",
+  "from_agent": "ju_chief_estimate",
+  "to_agent": "ju_orchestrator",
+  "domain": "estimate",
+  "site_id": "yangju-okjeong-35",
+  "customer_id": "cust-kim-2508",
+  "stage": "compare_ab",
+  "summary": "양주 옥정 35평 단층 A/B 비교 완료 — 외장 세라믹 vs 섬유시멘트",
+  "payload": {
+    "estimate_summary": "35평 단층, 예산 범위 제시. A안 세라믹 / B안 섬유시멘트. 지붕은 공통 스탠딩심 메탈.",
+    "options": {
+      "plan_a": {
+        "exterior": "세라믹 사이딩",
+        "roof": "스탠딩심 메탈",
+        "framing": "2x6 + OSB + platform framing",
+        "note": "유지보수·자정성에 유리"
+      },
+      "plan_b": {
+        "exterior": "섬유시멘트 사이딩",
+        "roof": "스탠딩심 메탈",
+        "framing": "2x6 + OSB + platform framing",
+        "note": "초기 비용 부담 완화"
+      },
+      "diff_summary": "골조는 동일(2x6). 차이는 외장 소재와 유지보수 톤."
+    },
+    "customer_talking_points": [
+      "목조가 추운 게 아니라 단열·기밀이 좌우합니다",
+      "구조는 2x6 경량 목조로 뼈대부터 맞춥니다",
+      "공정은 골조→지붕→외장 순서로 투명하게 공유합니다",
+      "단가가 아니라 범위와 조건으로 설명드립니다"
+    ],
+    "risks": ["부지 경사에 따른 기초·옹벽 보강 가능성"],
+    "asks_from_peers": ["현장 실측 일정 확정", "마케팅용 골조 단계 사진 촬영 일정"]
+  },
+  "cross_domain_flags": {
+    "affects_field": true,
+    "affects_marketing": true,
+    "notes": "실측 전 PDF 확정 금지. 외장 비교 컷은 공정 단계 섞지 말 것."
+  },
+  "priority": "high",
+  "created_at": "2026-08-07T10:00:00+09:00"
+}
