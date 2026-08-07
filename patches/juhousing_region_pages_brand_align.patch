@@ -1,0 +1,410 @@
+From 1ea63b511026ab061b6a5d67510f7c19151afdee Mon Sep 17 00:00:00 2001
+From: Cursor Agent <cursoragent@cursor.com>
+Date: Fri, 7 Aug 2026 18:24:44 +0000
+Subject: [PATCH] feat: align region landings with homepage brand tone
+
+Bring gapyeong/yangju/hwaseong/yangpyeong pages in line with the home
+story: 2x6 framing philosophy (Structure/Envelope/Trust), calmer CTA
+panel, placement attrs, and remove unverified 40% savings claims.
+---
+ CONTENT.md                              |  2 +-
+ harness/regression/test_site_content.py | 16 ++++++++
+ html/regions/gapyeong.html              | 53 +++++++++++++++++--------
+ html/regions/hwaseong.html              | 51 ++++++++++++++++--------
+ html/regions/yangju.html                | 51 ++++++++++++++++--------
+ html/regions/yangpyeong.html            | 51 ++++++++++++++++--------
+ 6 files changed, 158 insertions(+), 66 deletions(-)
+
+diff --git a/CONTENT.md b/CONTENT.md
+index d364972..959e88a 100644
+--- a/CONTENT.md
++++ b/CONTENT.md
+@@ -10,7 +10,7 @@
+ | `html/site-content-process.json` | 시공 5단계 상세 글 (HTML 조각) |
+ | `html/js/site-render.js` | JSON → 화면 반영 (건드릴 일 거의 없음) |
+ | `html/framing-detail.html` 등 | 강점 카드 상세 (404 방지) |
+-| `html/regions/*.html` | 지역/키워드 랜딩 (가평·양주·화성·양평) |
++| `html/regions/*.html` | 지역/키워드 랜딩 (가평·양주·화성·양평) — 홈과 동일하게 2x6·시공철학·CTA 톤 유지 |
+ | `html/sitemap.xml` | 검색엔진 URL 목록 |
+ | `html/logo.png` | 상단 로고 |
+ | `html/images/hero_main.jpg` | 메인 히어로 배경 |
+diff --git a/harness/regression/test_site_content.py b/harness/regression/test_site_content.py
+index ac11cda..a0533e4 100644
+--- a/harness/regression/test_site_content.py
++++ b/harness/regression/test_site_content.py
+@@ -113,3 +113,19 @@ def test_index_html_references_site_content() -> None:
+ def test_docker_compose_has_nginx() -> None:
+     text = (WEB_ROOT / "docker-compose.yml").read_text(encoding="utf-8")
+     assert "nginx" in text
++
++
++def test_region_pages_match_home_brand_tone() -> None:
++    """Region landings share homepage philosophy/2x6/CTA placement markers."""
++    for name in ("gapyeong.html", "yangju.html", "hwaseong.html", "yangpyeong.html"):
++        path = HTML / "regions" / name
++        assert path.is_file(), f"missing region page: {name}"
++        html = path.read_text(encoding="utf-8")
++        assert 'id="region-philosophy"' in html, f"{name} missing philosophy block"
++        assert "2x6" in html, f"{name} must mention 2x6 studs"
++        assert "2x4" not in html, f"{name} must not mention 2x4"
++        assert "Structure" in html and "Envelope" in html and "Trust" in html
++        assert "data-cta-placement=" in html, f"{name} missing CTA placement attrs"
++        # Avoid unverified percent-savings claims
++        assert "40% 절감" not in html and "최대 40%" not in html
++
+diff --git a/html/regions/gapyeong.html b/html/regions/gapyeong.html
+index 0c0cf41..eed358b 100644
+--- a/html/regions/gapyeong.html
++++ b/html/regions/gapyeong.html
+@@ -40,7 +40,7 @@
+     <header class="bg-[#1a237e] text-white px-4 py-5">
+         <div class="max-w-3xl mx-auto flex items-center justify-between gap-4">
+             <div>
+-                <p class="text-xs text-blue-200 font-semibold tracking-wide">JU HOUSING · 시공 지역</p>
++                <p class="text-xs text-blue-200 font-semibold tracking-wide">제이유 하우징 · 2x6 경량 목조 · 시공 지역</p>
+                 <h1 class="text-xl sm:text-2xl font-extrabold leading-snug">가평 목조주택·전원주택 시공</h1>
+             </div>
+             <a href="/" class="text-sm text-blue-200 hover:text-white underline underline-offset-4 shrink-0">홈으로</a>
+@@ -49,7 +49,7 @@
+     <main class="max-w-3xl mx-auto px-4 py-10 space-y-8">
+         <p class="text-sm text-slate-500"><a href="/" class="hover:text-blue-700">홈</a> / <span class="text-slate-800 font-medium">가평 목조주택</span></p>
+         <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-5">
+-            <p class="text-blue-700 font-black text-sm tracking-wide">경량목구조 · 정밀 시공 · 투명 정산</p>
++            <p class="text-[#8a7340] font-black text-sm tracking-wide">2x6 경량 목조 · 정밀 시공 · 투명 공정</p>
+             <p class="text-slate-600 leading-relaxed text-pretty">가평은 고저차·습기·동절기 기온 변화가 큰 현장입니다. 제이유 하우징은 레이저 실측과 KD 구조재로 지형에 맞는 골조·기밀 설계를 우선합니다.</p>
+             <ul class="space-y-3 text-sm sm:text-base text-slate-700 leading-relaxed list-disc pl-5 marker:text-blue-600">
+                 <li>산중·경사지 레이저 실측으로 mm 단위 레벨 맞춤</li>
+@@ -59,15 +59,33 @@
+             </ul>
+             <p class="text-sm text-slate-500">포트폴리오에 가평 산중 모던 전원주택 사례가 있습니다.</p>
+         </section>
+-        <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-3">
+-            <h2 class="text-lg font-bold text-slate-900">제이유 하우징이 가평에서 지키는 기준</h2>
+-            <ul class="space-y-2 text-sm text-slate-700 leading-relaxed list-disc pl-5 marker:text-blue-600">
+-                <li>캐나다 목재협회(CWC) 규격 구조재</li>
+-                <li>수분 함수율 19% 미만 KD 건조목</li>
+-                <li>국토부 단열재 등급을 고려한 단열·기밀</li>
+-                <li>레이저 ±0.5mm 프레이밍</li>
++                <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-5" id="region-philosophy">
++            <p class="text-xs font-bold tracking-[0.18em] uppercase text-[#8a7340]">Philosophy · 가평</p>
++            <h2 class="text-lg sm:text-xl font-bold text-slate-900">우리는 집을 장식이 아니라 구조로 짓습니다</h2>
++            <p class="text-sm text-slate-600 leading-relaxed">가평 현장에서도 기준은 같습니다. <strong>2x6 스터드 + OSB + platform framing</strong>, 투명한 공정, 한국 현장 대응.</p>
++            <div class="grid sm:grid-cols-3 gap-4 text-sm">
++                <div class="border-t border-slate-200 pt-3">
++                    <p class="text-[#8a7340] text-xs font-bold tracking-[0.14em] uppercase">Structure</p>
++                    <p class="mt-1 font-bold text-slate-900">정밀 골조</p>
++                    <p class="mt-1 text-slate-600 leading-relaxed">2x6 스터드, OSB, platform framing. 레이저 실측으로 지형에 맞춥니다.</p>
++                </div>
++                <div class="border-t border-slate-200 pt-3">
++                    <p class="text-[#8a7340] text-xs font-bold tracking-[0.14em] uppercase">Envelope</p>
++                    <p class="mt-1 font-bold text-slate-900">기후 외피</p>
++                    <p class="mt-1 text-slate-600 leading-relaxed">세라믹·섬유시멘트 사이딩과 스탠딩심 메탈 지붕으로 사계절에 대응합니다.</p>
++                </div>
++                <div class="border-t border-slate-200 pt-3">
++                    <p class="text-[#8a7340] text-xs font-bold tracking-[0.14em] uppercase">Trust</p>
++                    <p class="mt-1 font-bold text-slate-900">공정 신뢰</p>
++                    <p class="mt-1 text-slate-600 leading-relaxed">원가·공정을 공개합니다. 약속은 현장 조건과 함께 말합니다.</p>
++                </div>
++            </div>
++            <ul class="space-y-2 text-sm text-slate-700 leading-relaxed list-disc pl-5 marker:text-[#c4a35a]">
++                <li>2x6 경량 목조 골조 (한옥·중목·통나무집 아님)</li>
++                <li>함수율 관리된 KD 구조재 · 레이저 정밀 프레이밍</li>
++                <li>국토부 단열 기준을 고려한 단열·기밀</li>
+             </ul>
+-            <p class="text-sm pt-2"><a href="/framing-detail.html" class="text-blue-700 underline">프레이밍 상세</a> · <a href="/exterior-detail.html" class="text-blue-700 underline">외장 상세</a> · <a href="/financial-detail.html" class="text-blue-700 underline">정산 상세</a></p>
++            <p class="text-sm pt-1"><a href="/framing-detail.html" class="text-[#8a7340] underline underline-offset-2">프레이밍 상세</a> · <a href="/exterior-detail.html" class="text-[#8a7340] underline underline-offset-2">외장 상세</a> · <a href="/financial-detail.html" class="text-[#8a7340] underline underline-offset-2">정산 상세</a></p>
+         </section>
+ 
+         <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-4">
+@@ -84,7 +102,7 @@
+                 </div>
+                 <div class="rounded-xl bg-slate-50 border border-slate-100 p-4 space-y-1.5">
+                     <p class="font-bold text-slate-900">단열·기밀 그레이드</p>
+-                    <p class="leading-relaxed">외단열 EPS·PIR 100mm + 내단열 인슐레이션 R23~R38 조합, 3중 유리 시스템 창호(U값 0.8 이하 권장)로 냉난방비를 콘크리트 대비 최대 40% 절감하는 패시브급을 지향합니다.</p>
++                    <p class="leading-relaxed">외단열 EPS·PIR 100mm + 내단열 인슐레이션 R23~R38 조합, 3중 유리 시스템 창호(U값 0.8 이하 권장)로 냉난방 부담을 낮추는 패시브급 단열·기밀을 지향합니다. 수치는 현장·스펙에 따라 달라 상담에서 조건과 함께 안내드립니다.</p>
+                 </div>
+                 <div class="rounded-xl bg-slate-50 border border-slate-100 p-4 space-y-1.5">
+                     <p class="font-bold text-slate-900">별장·주말주택 옵션</p>
+@@ -141,14 +159,15 @@
+             <p class="text-sm text-slate-700 leading-relaxed">청평면·조종면·설악면·상면·하면·북면·가평읍 전 지역 시공 가능합니다. 인접한 남양주(화도·수동·조안·와부), 포천(내촌·소흘), 춘천(남면·서면) 인근까지 상담 가능하며, 본사(양주) 기준 90분 이내 현장 관리 체계를 유지합니다.</p>
+         </section>
+ 
+-        <section class="rounded-2xl bg-[#1a237e] text-white p-6 sm:p-8 space-y-4">
++                <section class="rounded-2xl bg-slate-950 text-white p-6 sm:p-8 space-y-4" id="region-cta">
++            <p class="text-xs font-bold tracking-[0.18em] uppercase text-[#c4a35a]">Consult</p>
+             <h2 class="text-xl font-extrabold">가평 현장 상담 신청</h2>
+-            <p class="text-blue-100 text-sm leading-relaxed">부지 주소·희망 평수만 남겨 주셔도 1차 예산 가이드(참고용)를 안내합니다.</p>
++            <p class="text-slate-300 text-sm leading-relaxed">도면이 없어도 됩니다. 부지 주소·희망 평수부터 남겨 주시면 1차 예산 가이드(참고용)를 안내합니다.</p>
+             <div class="flex flex-wrap gap-3">
+-                <a href="/consult.html" class="inline-flex items-center justify-center rounded-full bg-white px-5 py-2.5 text-sm font-bold text-[#1a237e] hover:bg-blue-50">건축 상담</a>
+-                <button type="button" data-ju-chat-open class="inline-flex items-center justify-center rounded-full bg-blue-500 px-5 py-2.5 text-sm font-bold text-white hover:bg-blue-400">AI 상담</button>
+-                <a href="/estimate.html" class="inline-flex items-center justify-center rounded-full border border-white/40 px-5 py-2.5 text-sm font-bold text-white hover:bg-white/10">예산 가이드</a>
+-                <a href="tel:010-2951-0431" class="inline-flex items-center justify-center rounded-full border border-white/40 px-5 py-2.5 text-sm font-bold text-white hover:bg-white/10">010-2951-0431</a>
++                <a href="/consult.html" data-cta-placement="region_gapyeong" class="inline-flex items-center justify-center rounded-full bg-[#c4a35a] px-5 py-2.5 text-sm font-bold text-slate-950 hover:bg-[#b8923f]">건축 상담 신청</a>
++                <a href="/estimate.html" data-cta-placement="region_gapyeong_estimate" class="inline-flex items-center justify-center rounded-full border border-white/40 px-5 py-2.5 text-sm font-bold text-white hover:bg-white/10">1차 예산 가이드</a>
++                <a href="tel:010-2951-0431" data-ju-phone-link data-cta-placement="region_gapyeong_phone" class="inline-flex items-center justify-center rounded-full border border-white/40 px-5 py-2.5 text-sm font-bold text-white hover:bg-white/10">전화 상담</a>
++                <button type="button" data-ju-chat-open data-cta-placement="region_gapyeong_chat" class="inline-flex items-center justify-center rounded-full bg-white/10 px-5 py-2.5 text-sm font-bold text-white hover:bg-white/15">AI 상담</button>
+             </div>
+         </section>
+         <nav class="text-sm text-slate-600" aria-label="다른 시공 지역">
+diff --git a/html/regions/hwaseong.html b/html/regions/hwaseong.html
+index 346020b..54c423e 100644
+--- a/html/regions/hwaseong.html
++++ b/html/regions/hwaseong.html
+@@ -40,7 +40,7 @@
+     <header class="bg-[#1a237e] text-white px-4 py-5">
+         <div class="max-w-3xl mx-auto flex items-center justify-between gap-4">
+             <div>
+-                <p class="text-xs text-blue-200 font-semibold tracking-wide">JU HOUSING · 시공 지역</p>
++                <p class="text-xs text-blue-200 font-semibold tracking-wide">제이유 하우징 · 2x6 경량 목조 · 시공 지역</p>
+                 <h1 class="text-xl sm:text-2xl font-extrabold leading-snug">화성 목조주택·단독주택 시공</h1>
+             </div>
+             <a href="/" class="text-sm text-blue-200 hover:text-white underline underline-offset-4 shrink-0">홈으로</a>
+@@ -49,7 +49,7 @@
+     <main class="max-w-3xl mx-auto px-4 py-10 space-y-8">
+         <p class="text-sm text-slate-500"><a href="/" class="hover:text-blue-700">홈</a> / <span class="text-slate-800 font-medium">화성 목조주택</span></p>
+         <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-5">
+-            <p class="text-blue-700 font-black text-sm tracking-wide">경량목구조 · 정밀 시공 · 투명 정산</p>
++            <p class="text-[#8a7340] font-black text-sm tracking-wide">2x6 경량 목조 · 정밀 시공 · 투명 공정</p>
+             <p class="text-slate-600 leading-relaxed text-pretty">화성·동탄권 단독주택 수요에 맞춰, 정밀 골조와 유지보수 부담이 낮은 외장·기밀 시공을 제안합니다. 검색 오탈자(징크지봉)까지 고려한 지붕·외장 스펙을 안내합니다.</p>
+             <ul class="space-y-3 text-sm sm:text-base text-slate-700 leading-relaxed list-disc pl-5 marker:text-blue-600">
+                 <li>화성·동탄 생활권 단독·전원형 목조주택 맞춤 상담</li>
+@@ -59,15 +59,33 @@
+             </ul>
+             <p class="text-sm text-slate-500">화성 부지 주소만 알려 주셔도 1차 예산 가이드를 드릴 수 있습니다.</p>
+         </section>
+-        <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-3">
+-            <h2 class="text-lg font-bold text-slate-900">제이유 하우징이 화성에서 지키는 기준</h2>
+-            <ul class="space-y-2 text-sm text-slate-700 leading-relaxed list-disc pl-5 marker:text-blue-600">
+-                <li>캐나다 목재협회(CWC) 규격 구조재</li>
+-                <li>수분 함수율 19% 미만 KD 건조목</li>
+-                <li>국토부 단열재 등급을 고려한 단열·기밀</li>
+-                <li>레이저 ±0.5mm 프레이밍</li>
++                <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-5" id="region-philosophy">
++            <p class="text-xs font-bold tracking-[0.18em] uppercase text-[#8a7340]">Philosophy · 화성</p>
++            <h2 class="text-lg sm:text-xl font-bold text-slate-900">우리는 집을 장식이 아니라 구조로 짓습니다</h2>
++            <p class="text-sm text-slate-600 leading-relaxed">화성 현장에서도 기준은 같습니다. <strong>2x6 스터드 + OSB + platform framing</strong>, 투명한 공정, 한국 현장 대응.</p>
++            <div class="grid sm:grid-cols-3 gap-4 text-sm">
++                <div class="border-t border-slate-200 pt-3">
++                    <p class="text-[#8a7340] text-xs font-bold tracking-[0.14em] uppercase">Structure</p>
++                    <p class="mt-1 font-bold text-slate-900">정밀 골조</p>
++                    <p class="mt-1 text-slate-600 leading-relaxed">2x6 스터드, OSB, platform framing. 레이저 실측으로 지형에 맞춥니다.</p>
++                </div>
++                <div class="border-t border-slate-200 pt-3">
++                    <p class="text-[#8a7340] text-xs font-bold tracking-[0.14em] uppercase">Envelope</p>
++                    <p class="mt-1 font-bold text-slate-900">기후 외피</p>
++                    <p class="mt-1 text-slate-600 leading-relaxed">세라믹·섬유시멘트 사이딩과 스탠딩심 메탈 지붕으로 사계절에 대응합니다.</p>
++                </div>
++                <div class="border-t border-slate-200 pt-3">
++                    <p class="text-[#8a7340] text-xs font-bold tracking-[0.14em] uppercase">Trust</p>
++                    <p class="mt-1 font-bold text-slate-900">공정 신뢰</p>
++                    <p class="mt-1 text-slate-600 leading-relaxed">원가·공정을 공개합니다. 약속은 현장 조건과 함께 말합니다.</p>
++                </div>
++            </div>
++            <ul class="space-y-2 text-sm text-slate-700 leading-relaxed list-disc pl-5 marker:text-[#c4a35a]">
++                <li>2x6 경량 목조 골조 (한옥·중목·통나무집 아님)</li>
++                <li>함수율 관리된 KD 구조재 · 레이저 정밀 프레이밍</li>
++                <li>국토부 단열 기준을 고려한 단열·기밀</li>
+             </ul>
+-            <p class="text-sm pt-2"><a href="/framing-detail.html" class="text-blue-700 underline">프레이밍 상세</a> · <a href="/exterior-detail.html" class="text-blue-700 underline">외장 상세</a> · <a href="/financial-detail.html" class="text-blue-700 underline">정산 상세</a></p>
++            <p class="text-sm pt-1"><a href="/framing-detail.html" class="text-[#8a7340] underline underline-offset-2">프레이밍 상세</a> · <a href="/exterior-detail.html" class="text-[#8a7340] underline underline-offset-2">외장 상세</a> · <a href="/financial-detail.html" class="text-[#8a7340] underline underline-offset-2">정산 상세</a></p>
+         </section>
+ 
+         <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-4">
+@@ -141,14 +159,15 @@
+             <p class="text-sm text-slate-700 leading-relaxed">동탄 1·2 신도시, 향남읍·봉담읍·정남면·팔탄면·비봉면·매송면·우정읍·서신면·송산면 전 지역 시공 가능합니다. 인접한 오산(오산·세교), 평택(안중·청북·오성), 수원(권선·영통), 안산(단원·상록)까지 상담 가능하며, 본사 기준 약 90~120분 이내 관리 체계입니다.</p>
+         </section>
+ 
+-        <section class="rounded-2xl bg-[#1a237e] text-white p-6 sm:p-8 space-y-4">
++                <section class="rounded-2xl bg-slate-950 text-white p-6 sm:p-8 space-y-4" id="region-cta">
++            <p class="text-xs font-bold tracking-[0.18em] uppercase text-[#c4a35a]">Consult</p>
+             <h2 class="text-xl font-extrabold">화성 현장 상담 신청</h2>
+-            <p class="text-blue-100 text-sm leading-relaxed">부지 주소·희망 평수만 남겨 주셔도 1차 예산 가이드(참고용)를 안내합니다.</p>
++            <p class="text-slate-300 text-sm leading-relaxed">도면이 없어도 됩니다. 부지 주소·희망 평수부터 남겨 주시면 1차 예산 가이드(참고용)를 안내합니다.</p>
+             <div class="flex flex-wrap gap-3">
+-                <a href="/consult.html" class="inline-flex items-center justify-center rounded-full bg-white px-5 py-2.5 text-sm font-bold text-[#1a237e] hover:bg-blue-50">건축 상담</a>
+-                <button type="button" data-ju-chat-open class="inline-flex items-center justify-center rounded-full bg-blue-500 px-5 py-2.5 text-sm font-bold text-white hover:bg-blue-400">AI 상담</button>
+-                <a href="/estimate.html" class="inline-flex items-center justify-center rounded-full border border-white/40 px-5 py-2.5 text-sm font-bold text-white hover:bg-white/10">예산 가이드</a>
+-                <a href="tel:010-2951-0431" class="inline-flex items-center justify-center rounded-full border border-white/40 px-5 py-2.5 text-sm font-bold text-white hover:bg-white/10">010-2951-0431</a>
++                <a href="/consult.html" data-cta-placement="region_hwaseong" class="inline-flex items-center justify-center rounded-full bg-[#c4a35a] px-5 py-2.5 text-sm font-bold text-slate-950 hover:bg-[#b8923f]">건축 상담 신청</a>
++                <a href="/estimate.html" data-cta-placement="region_hwaseong_estimate" class="inline-flex items-center justify-center rounded-full border border-white/40 px-5 py-2.5 text-sm font-bold text-white hover:bg-white/10">1차 예산 가이드</a>
++                <a href="tel:010-2951-0431" data-ju-phone-link data-cta-placement="region_hwaseong_phone" class="inline-flex items-center justify-center rounded-full border border-white/40 px-5 py-2.5 text-sm font-bold text-white hover:bg-white/10">전화 상담</a>
++                <button type="button" data-ju-chat-open data-cta-placement="region_hwaseong_chat" class="inline-flex items-center justify-center rounded-full bg-white/10 px-5 py-2.5 text-sm font-bold text-white hover:bg-white/15">AI 상담</button>
+             </div>
+         </section>
+         <nav class="text-sm text-slate-600" aria-label="다른 시공 지역">
+diff --git a/html/regions/yangju.html b/html/regions/yangju.html
+index e622484..768a5b8 100644
+--- a/html/regions/yangju.html
++++ b/html/regions/yangju.html
+@@ -40,7 +40,7 @@
+     <header class="bg-[#1a237e] text-white px-4 py-5">
+         <div class="max-w-3xl mx-auto flex items-center justify-between gap-4">
+             <div>
+-                <p class="text-xs text-blue-200 font-semibold tracking-wide">JU HOUSING · 시공 지역</p>
++                <p class="text-xs text-blue-200 font-semibold tracking-wide">제이유 하우징 · 2x6 경량 목조 · 시공 지역</p>
+                 <h1 class="text-xl sm:text-2xl font-extrabold leading-snug">양주 목조주택·단독주택 시공</h1>
+             </div>
+             <a href="/" class="text-sm text-blue-200 hover:text-white underline underline-offset-4 shrink-0">홈으로</a>
+@@ -49,7 +49,7 @@
+     <main class="max-w-3xl mx-auto px-4 py-10 space-y-8">
+         <p class="text-sm text-slate-500"><a href="/" class="hover:text-blue-700">홈</a> / <span class="text-slate-800 font-medium">양주 목조주택</span></p>
+         <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-5">
+-            <p class="text-blue-700 font-black text-sm tracking-wide">경량목구조 · 정밀 시공 · 투명 정산</p>
++            <p class="text-[#8a7340] font-black text-sm tracking-wide">2x6 경량 목조 · 정밀 시공 · 투명 공정</p>
+             <p class="text-slate-600 leading-relaxed text-pretty">제이유 하우징 본사(양주시 부흥로 2128)를 중심으로 경기 북부·수도권 현장을 밀착 관리합니다. 상담부터 정산까지 가까운 거리에서 소통합니다.</p>
+             <ul class="space-y-3 text-sm sm:text-base text-slate-700 leading-relaxed list-disc pl-5 marker:text-blue-600">
+                 <li>양주 본사 직영 커뮤니케이션 — 현장·본사 간 의사결정 지연 최소화</li>
+@@ -59,15 +59,33 @@
+             </ul>
+             <p class="text-sm text-slate-500">양주·인근 경기권 신축·증축 상담을 상시 접수합니다.</p>
+         </section>
+-        <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-3">
+-            <h2 class="text-lg font-bold text-slate-900">제이유 하우징이 양주에서 지키는 기준</h2>
+-            <ul class="space-y-2 text-sm text-slate-700 leading-relaxed list-disc pl-5 marker:text-blue-600">
+-                <li>캐나다 목재협회(CWC) 규격 구조재</li>
+-                <li>수분 함수율 19% 미만 KD 건조목</li>
+-                <li>국토부 단열재 등급을 고려한 단열·기밀</li>
+-                <li>레이저 ±0.5mm 프레이밍</li>
++                <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-5" id="region-philosophy">
++            <p class="text-xs font-bold tracking-[0.18em] uppercase text-[#8a7340]">Philosophy · 양주</p>
++            <h2 class="text-lg sm:text-xl font-bold text-slate-900">우리는 집을 장식이 아니라 구조로 짓습니다</h2>
++            <p class="text-sm text-slate-600 leading-relaxed">양주 현장에서도 기준은 같습니다. <strong>2x6 스터드 + OSB + platform framing</strong>, 투명한 공정, 한국 현장 대응.</p>
++            <div class="grid sm:grid-cols-3 gap-4 text-sm">
++                <div class="border-t border-slate-200 pt-3">
++                    <p class="text-[#8a7340] text-xs font-bold tracking-[0.14em] uppercase">Structure</p>
++                    <p class="mt-1 font-bold text-slate-900">정밀 골조</p>
++                    <p class="mt-1 text-slate-600 leading-relaxed">2x6 스터드, OSB, platform framing. 레이저 실측으로 지형에 맞춥니다.</p>
++                </div>
++                <div class="border-t border-slate-200 pt-3">
++                    <p class="text-[#8a7340] text-xs font-bold tracking-[0.14em] uppercase">Envelope</p>
++                    <p class="mt-1 font-bold text-slate-900">기후 외피</p>
++                    <p class="mt-1 text-slate-600 leading-relaxed">세라믹·섬유시멘트 사이딩과 스탠딩심 메탈 지붕으로 사계절에 대응합니다.</p>
++                </div>
++                <div class="border-t border-slate-200 pt-3">
++                    <p class="text-[#8a7340] text-xs font-bold tracking-[0.14em] uppercase">Trust</p>
++                    <p class="mt-1 font-bold text-slate-900">공정 신뢰</p>
++                    <p class="mt-1 text-slate-600 leading-relaxed">원가·공정을 공개합니다. 약속은 현장 조건과 함께 말합니다.</p>
++                </div>
++            </div>
++            <ul class="space-y-2 text-sm text-slate-700 leading-relaxed list-disc pl-5 marker:text-[#c4a35a]">
++                <li>2x6 경량 목조 골조 (한옥·중목·통나무집 아님)</li>
++                <li>함수율 관리된 KD 구조재 · 레이저 정밀 프레이밍</li>
++                <li>국토부 단열 기준을 고려한 단열·기밀</li>
+             </ul>
+-            <p class="text-sm pt-2"><a href="/framing-detail.html" class="text-blue-700 underline">프레이밍 상세</a> · <a href="/exterior-detail.html" class="text-blue-700 underline">외장 상세</a> · <a href="/financial-detail.html" class="text-blue-700 underline">정산 상세</a></p>
++            <p class="text-sm pt-1"><a href="/framing-detail.html" class="text-[#8a7340] underline underline-offset-2">프레이밍 상세</a> · <a href="/exterior-detail.html" class="text-[#8a7340] underline underline-offset-2">외장 상세</a> · <a href="/financial-detail.html" class="text-[#8a7340] underline underline-offset-2">정산 상세</a></p>
+         </section>
+ 
+         <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-4">
+@@ -141,14 +159,15 @@
+             <p class="text-sm text-slate-700 leading-relaxed">옥정동·회천동·백석읍·남면·은현면·광적면·장흥면·회정동·덕정동·양주동 전 지역 시공 가능합니다. 인접한 의정부(자일·낙양·민락), 동두천(생연·소요), 포천(내촌·소흘), 남양주(진접·오남)까지 상담 가능하며, 본사 기준 60분 이내 관리 체계를 유지합니다.</p>
+         </section>
+ 
+-        <section class="rounded-2xl bg-[#1a237e] text-white p-6 sm:p-8 space-y-4">
++                <section class="rounded-2xl bg-slate-950 text-white p-6 sm:p-8 space-y-4" id="region-cta">
++            <p class="text-xs font-bold tracking-[0.18em] uppercase text-[#c4a35a]">Consult</p>
+             <h2 class="text-xl font-extrabold">양주 현장 상담 신청</h2>
+-            <p class="text-blue-100 text-sm leading-relaxed">부지 주소·희망 평수만 남겨 주셔도 1차 예산 가이드(참고용)를 안내합니다.</p>
++            <p class="text-slate-300 text-sm leading-relaxed">도면이 없어도 됩니다. 부지 주소·희망 평수부터 남겨 주시면 1차 예산 가이드(참고용)를 안내합니다.</p>
+             <div class="flex flex-wrap gap-3">
+-                <a href="/consult.html" class="inline-flex items-center justify-center rounded-full bg-white px-5 py-2.5 text-sm font-bold text-[#1a237e] hover:bg-blue-50">건축 상담</a>
+-                <button type="button" data-ju-chat-open class="inline-flex items-center justify-center rounded-full bg-blue-500 px-5 py-2.5 text-sm font-bold text-white hover:bg-blue-400">AI 상담</button>
+-                <a href="/estimate.html" class="inline-flex items-center justify-center rounded-full border border-white/40 px-5 py-2.5 text-sm font-bold text-white hover:bg-white/10">예산 가이드</a>
+-                <a href="tel:010-2951-0431" class="inline-flex items-center justify-center rounded-full border border-white/40 px-5 py-2.5 text-sm font-bold text-white hover:bg-white/10">010-2951-0431</a>
++                <a href="/consult.html" data-cta-placement="region_yangju" class="inline-flex items-center justify-center rounded-full bg-[#c4a35a] px-5 py-2.5 text-sm font-bold text-slate-950 hover:bg-[#b8923f]">건축 상담 신청</a>
++                <a href="/estimate.html" data-cta-placement="region_yangju_estimate" class="inline-flex items-center justify-center rounded-full border border-white/40 px-5 py-2.5 text-sm font-bold text-white hover:bg-white/10">1차 예산 가이드</a>
++                <a href="tel:010-2951-0431" data-ju-phone-link data-cta-placement="region_yangju_phone" class="inline-flex items-center justify-center rounded-full border border-white/40 px-5 py-2.5 text-sm font-bold text-white hover:bg-white/10">전화 상담</a>
++                <button type="button" data-ju-chat-open data-cta-placement="region_yangju_chat" class="inline-flex items-center justify-center rounded-full bg-white/10 px-5 py-2.5 text-sm font-bold text-white hover:bg-white/15">AI 상담</button>
+             </div>
+         </section>
+         <nav class="text-sm text-slate-600" aria-label="다른 시공 지역">
+diff --git a/html/regions/yangpyeong.html b/html/regions/yangpyeong.html
+index f3066a9..f9505da 100644
+--- a/html/regions/yangpyeong.html
++++ b/html/regions/yangpyeong.html
+@@ -40,7 +40,7 @@
+     <header class="bg-[#1a237e] text-white px-4 py-5">
+         <div class="max-w-3xl mx-auto flex items-center justify-between gap-4">
+             <div>
+-                <p class="text-xs text-blue-200 font-semibold tracking-wide">JU HOUSING · 시공 지역</p>
++                <p class="text-xs text-blue-200 font-semibold tracking-wide">제이유 하우징 · 2x6 경량 목조 · 시공 지역</p>
+                 <h1 class="text-xl sm:text-2xl font-extrabold leading-snug">양평 목조주택·전원주택 시공</h1>
+             </div>
+             <a href="/" class="text-sm text-blue-200 hover:text-white underline underline-offset-4 shrink-0">홈으로</a>
+@@ -49,7 +49,7 @@
+     <main class="max-w-3xl mx-auto px-4 py-10 space-y-8">
+         <p class="text-sm text-slate-500"><a href="/" class="hover:text-blue-700">홈</a> / <span class="text-slate-800 font-medium">양평 목조주택</span></p>
+         <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-5">
+-            <p class="text-blue-700 font-black text-sm tracking-wide">경량목구조 · 정밀 시공 · 투명 정산</p>
++            <p class="text-[#8a7340] font-black text-sm tracking-wide">2x6 경량 목조 · 정밀 시공 · 투명 공정</p>
+             <p class="text-slate-600 leading-relaxed text-pretty">양평은 전원·주말주택 수요가 많은 지역입니다. 장기 거주와 관리 편의성을 동시에 잡는 외장·단열·정밀 골조에 집중합니다.</p>
+             <ul class="space-y-3 text-sm sm:text-base text-slate-700 leading-relaxed list-disc pl-5 marker:text-blue-600">
+                 <li>양평·양수리 인근 전원형 대지 실측·설계 연계</li>
+@@ -59,15 +59,33 @@
+             </ul>
+             <p class="text-sm text-slate-500">경기 동부권(가평·양평·남양주) 시공 가능 지역입니다.</p>
+         </section>
+-        <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-3">
+-            <h2 class="text-lg font-bold text-slate-900">제이유 하우징이 양평에서 지키는 기준</h2>
+-            <ul class="space-y-2 text-sm text-slate-700 leading-relaxed list-disc pl-5 marker:text-blue-600">
+-                <li>캐나다 목재협회(CWC) 규격 구조재</li>
+-                <li>수분 함수율 19% 미만 KD 건조목</li>
+-                <li>국토부 단열재 등급을 고려한 단열·기밀</li>
+-                <li>레이저 ±0.5mm 프레이밍</li>
++                <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-5" id="region-philosophy">
++            <p class="text-xs font-bold tracking-[0.18em] uppercase text-[#8a7340]">Philosophy · 양평</p>
++            <h2 class="text-lg sm:text-xl font-bold text-slate-900">우리는 집을 장식이 아니라 구조로 짓습니다</h2>
++            <p class="text-sm text-slate-600 leading-relaxed">양평 현장에서도 기준은 같습니다. <strong>2x6 스터드 + OSB + platform framing</strong>, 투명한 공정, 한국 현장 대응.</p>
++            <div class="grid sm:grid-cols-3 gap-4 text-sm">
++                <div class="border-t border-slate-200 pt-3">
++                    <p class="text-[#8a7340] text-xs font-bold tracking-[0.14em] uppercase">Structure</p>
++                    <p class="mt-1 font-bold text-slate-900">정밀 골조</p>
++                    <p class="mt-1 text-slate-600 leading-relaxed">2x6 스터드, OSB, platform framing. 레이저 실측으로 지형에 맞춥니다.</p>
++                </div>
++                <div class="border-t border-slate-200 pt-3">
++                    <p class="text-[#8a7340] text-xs font-bold tracking-[0.14em] uppercase">Envelope</p>
++                    <p class="mt-1 font-bold text-slate-900">기후 외피</p>
++                    <p class="mt-1 text-slate-600 leading-relaxed">세라믹·섬유시멘트 사이딩과 스탠딩심 메탈 지붕으로 사계절에 대응합니다.</p>
++                </div>
++                <div class="border-t border-slate-200 pt-3">
++                    <p class="text-[#8a7340] text-xs font-bold tracking-[0.14em] uppercase">Trust</p>
++                    <p class="mt-1 font-bold text-slate-900">공정 신뢰</p>
++                    <p class="mt-1 text-slate-600 leading-relaxed">원가·공정을 공개합니다. 약속은 현장 조건과 함께 말합니다.</p>
++                </div>
++            </div>
++            <ul class="space-y-2 text-sm text-slate-700 leading-relaxed list-disc pl-5 marker:text-[#c4a35a]">
++                <li>2x6 경량 목조 골조 (한옥·중목·통나무집 아님)</li>
++                <li>함수율 관리된 KD 구조재 · 레이저 정밀 프레이밍</li>
++                <li>국토부 단열 기준을 고려한 단열·기밀</li>
+             </ul>
+-            <p class="text-sm pt-2"><a href="/framing-detail.html" class="text-blue-700 underline">프레이밍 상세</a> · <a href="/exterior-detail.html" class="text-blue-700 underline">외장 상세</a> · <a href="/financial-detail.html" class="text-blue-700 underline">정산 상세</a></p>
++            <p class="text-sm pt-1"><a href="/framing-detail.html" class="text-[#8a7340] underline underline-offset-2">프레이밍 상세</a> · <a href="/exterior-detail.html" class="text-[#8a7340] underline underline-offset-2">외장 상세</a> · <a href="/financial-detail.html" class="text-[#8a7340] underline underline-offset-2">정산 상세</a></p>
+         </section>
+ 
+         <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-4">
+@@ -141,14 +159,15 @@
+             <p class="text-sm text-slate-700 leading-relaxed">서종면·양서면·강상면·강하면·용문면·양평읍·개군면·옥천면·단월면·지평면 전 지역 시공 가능합니다. 인접한 남양주(수동·조안·화도), 여주(대신·능서·북내), 광주(퇴촌·초월), 하남(춘궁·초이)까지 상담 가능하며, 본사 기준 60~90분 이내 관리 체계를 유지합니다.</p>
+         </section>
+ 
+-        <section class="rounded-2xl bg-[#1a237e] text-white p-6 sm:p-8 space-y-4">
++                <section class="rounded-2xl bg-slate-950 text-white p-6 sm:p-8 space-y-4" id="region-cta">
++            <p class="text-xs font-bold tracking-[0.18em] uppercase text-[#c4a35a]">Consult</p>
+             <h2 class="text-xl font-extrabold">양평 현장 상담 신청</h2>
+-            <p class="text-blue-100 text-sm leading-relaxed">부지 주소·희망 평수만 남겨 주셔도 1차 예산 가이드(참고용)를 안내합니다.</p>
++            <p class="text-slate-300 text-sm leading-relaxed">도면이 없어도 됩니다. 부지 주소·희망 평수부터 남겨 주시면 1차 예산 가이드(참고용)를 안내합니다.</p>
+             <div class="flex flex-wrap gap-3">
+-                <a href="/consult.html" class="inline-flex items-center justify-center rounded-full bg-white px-5 py-2.5 text-sm font-bold text-[#1a237e] hover:bg-blue-50">건축 상담</a>
+-                <button type="button" data-ju-chat-open class="inline-flex items-center justify-center rounded-full bg-blue-500 px-5 py-2.5 text-sm font-bold text-white hover:bg-blue-400">AI 상담</button>
+-                <a href="/estimate.html" class="inline-flex items-center justify-center rounded-full border border-white/40 px-5 py-2.5 text-sm font-bold text-white hover:bg-white/10">예산 가이드</a>
+-                <a href="tel:010-2951-0431" class="inline-flex items-center justify-center rounded-full border border-white/40 px-5 py-2.5 text-sm font-bold text-white hover:bg-white/10">010-2951-0431</a>
++                <a href="/consult.html" data-cta-placement="region_yangpyeong" class="inline-flex items-center justify-center rounded-full bg-[#c4a35a] px-5 py-2.5 text-sm font-bold text-slate-950 hover:bg-[#b8923f]">건축 상담 신청</a>
++                <a href="/estimate.html" data-cta-placement="region_yangpyeong_estimate" class="inline-flex items-center justify-center rounded-full border border-white/40 px-5 py-2.5 text-sm font-bold text-white hover:bg-white/10">1차 예산 가이드</a>
++                <a href="tel:010-2951-0431" data-ju-phone-link data-cta-placement="region_yangpyeong_phone" class="inline-flex items-center justify-center rounded-full border border-white/40 px-5 py-2.5 text-sm font-bold text-white hover:bg-white/10">전화 상담</a>
++                <button type="button" data-ju-chat-open data-cta-placement="region_yangpyeong_chat" class="inline-flex items-center justify-center rounded-full bg-white/10 px-5 py-2.5 text-sm font-bold text-white hover:bg-white/15">AI 상담</button>
+             </div>
+         </section>
+         <nav class="text-sm text-slate-600" aria-label="다른 시공 지역">
+-- 
+2.43.0
+
