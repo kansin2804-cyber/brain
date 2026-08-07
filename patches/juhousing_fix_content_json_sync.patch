@@ -1,0 +1,45 @@
+From 70b660fca44f57ef2bffe1d2b4986803e15ee9c4 Mon Sep 17 00:00:00 2001
+From: Cursor Agent <cursoragent@cursor.com>
+Date: Fri, 7 Aug 2026 20:03:22 +0000
+Subject: [PATCH] =?UTF-8?q?fix:=20resync=20site-content.json=20with=20home?=
+ =?UTF-8?q?page=20Phase=201=E2=80=933=20copy?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Live JSON had reverted meta/hero and duplicated FAQ items, so
+site-render.js overwrote the corrected SSR HTML on load.
+---
+ html/index.html        | 2 +-
+ html/js/site-render.js | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/html/index.html b/html/index.html
+index e96a825..81efc98 100644
+--- a/html/index.html
++++ b/html/index.html
+@@ -377,7 +377,7 @@
+             color: #fff;
+         }
+     </style>
+-    <script defer src="js/site-render.js?v=20260807c"></script>
++    <script defer src="js/site-render.js?v=20260807d"></script>
+ </head>
+ <body class="bg-gray-50 text-gray-800 antialiased font-sans selection:bg-stone-800 selection:text-white relative sticky-header-offset">
+ 
+diff --git a/html/js/site-render.js b/html/js/site-render.js
+index f4d0b9e..17ec826 100644
+--- a/html/js/site-render.js
++++ b/html/js/site-render.js
+@@ -1,7 +1,7 @@
+ (function () {
+     'use strict';
+ 
+-    var CONTENT_URL = 'site-content.json?v=20260807c';
++    var CONTENT_URL = 'site-content.json?v=20260807d';
+     var CHEVRON_SVG = '<svg class="faq-chevron size-5 shrink-0 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7" /></svg>';
+ 
+     function esc(text) {
+-- 
+2.43.0
+
