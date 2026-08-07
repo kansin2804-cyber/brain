@@ -1,0 +1,236 @@
+{
+  "name": "ju-brain",
+  "version": "1.0.0",
+  "description": "JU Housing HQ multi-agent knowledge corpus",
+  "brand": "제이유 하우징 / JU Housing",
+  "shared": [
+    {
+      "id": "ju_company_core",
+      "path": "knowledge/shared/ju_company_core.md",
+      "role": "회사 핵심·금지 표현·시공 철학"
+    },
+    {
+      "id": "ju_construction_basics",
+      "path": "knowledge/shared/ju_construction_basics.md",
+      "role": "표준 공정·품질 체크"
+    },
+    {
+      "id": "ju_visual_rules",
+      "path": "knowledge/shared/ju_visual_rules.md",
+      "role": "비주얼·자막·Imagen 공통 규칙"
+    }
+  ],
+  "agents": [
+    {
+      "id": "ju_orchestrator",
+      "path": "knowledge/core/ju_orchestrator.md",
+      "domain": "core",
+      "level": "hq",
+      "reports_to": null,
+      "children": [
+        "ju_chief_estimate",
+        "ju_chief_field",
+        "ju_chief_marketing"
+      ],
+      "inputs": ["HANDOFF_JSON", "SYNTHESIS_JSON"],
+      "outputs": ["priority_actions", "conflict_resolutions"]
+    },
+    {
+      "id": "ju_chief_estimate",
+      "path": "knowledge/estimate/ju_chief_estimate.md",
+      "domain": "estimate",
+      "level": "chief",
+      "reports_to": "ju_orchestrator",
+      "children": [
+        "ju_consultation",
+        "ju_compare_ab",
+        "ju_pricing_review"
+      ],
+      "guides": ["ju_estimate_guide"],
+      "outputs": [
+        "estimate_summary",
+        "options",
+        "customer_talking_points"
+      ]
+    },
+    {
+      "id": "ju_consultation",
+      "path": "knowledge/estimate/ju_consultation.md",
+      "domain": "estimate",
+      "level": "specialist",
+      "reports_to": "ju_chief_estimate",
+      "outputs": ["customer_needs", "site_basics", "faq_responses"]
+    },
+    {
+      "id": "ju_compare_ab",
+      "path": "knowledge/estimate/ju_compare_ab.md",
+      "domain": "estimate",
+      "level": "specialist",
+      "reports_to": "ju_chief_estimate",
+      "outputs": ["plan_a", "plan_b", "diff_summary"]
+    },
+    {
+      "id": "ju_pricing_review",
+      "path": "knowledge/estimate/ju_pricing_review.md",
+      "domain": "estimate",
+      "level": "specialist",
+      "reports_to": "ju_chief_estimate",
+      "outputs": ["price_range_notes", "scope_risks", "assumptions"]
+    },
+    {
+      "id": "ju_estimate_guide",
+      "path": "knowledge/estimate/ju_estimate_guide.md",
+      "domain": "estimate",
+      "level": "guide",
+      "reports_to": "ju_chief_estimate",
+      "outputs": []
+    },
+    {
+      "id": "ju_chief_field",
+      "path": "knowledge/field/ju_chief_field.md",
+      "domain": "field",
+      "level": "chief",
+      "reports_to": "ju_orchestrator",
+      "children": ["ju_daily_report", "ju_schedule", "ju_quality"],
+      "guides": ["ju_field_ops"],
+      "outputs": ["site_status", "schedule", "quality_flags"]
+    },
+    {
+      "id": "ju_daily_report",
+      "path": "knowledge/field/ju_daily_report.md",
+      "domain": "field",
+      "level": "specialist",
+      "reports_to": "ju_chief_field",
+      "outputs": ["daily_report", "issues"]
+    },
+    {
+      "id": "ju_schedule",
+      "path": "knowledge/field/ju_schedule.md",
+      "domain": "field",
+      "level": "specialist",
+      "reports_to": "ju_chief_field",
+      "outputs": ["schedule", "critical_path", "delays"]
+    },
+    {
+      "id": "ju_quality",
+      "path": "knowledge/field/ju_quality.md",
+      "domain": "field",
+      "level": "specialist",
+      "reports_to": "ju_chief_field",
+      "outputs": ["quality_checks", "safety", "photos_needed"]
+    },
+    {
+      "id": "ju_field_ops",
+      "path": "knowledge/field/ju_field_ops.md",
+      "domain": "field",
+      "level": "guide",
+      "reports_to": "ju_chief_field",
+      "outputs": []
+    },
+    {
+      "id": "ju_chief_marketing",
+      "path": "knowledge/marketing/ju_chief_marketing.md",
+      "domain": "marketing",
+      "level": "chief",
+      "reports_to": "ju_orchestrator",
+      "children": [
+        "ju_marketing_playbook",
+        "ju_blog_seo",
+        "ju_brand_guard",
+        "ju_shorts_planning"
+      ],
+      "outputs": ["campaign_summary", "content_pipeline", "brand_status"]
+    },
+    {
+      "id": "ju_marketing_playbook",
+      "path": "knowledge/marketing/ju_marketing_playbook.md",
+      "domain": "marketing",
+      "level": "guide",
+      "reports_to": "ju_chief_marketing",
+      "outputs": []
+    },
+    {
+      "id": "ju_blog_seo",
+      "path": "knowledge/marketing/ju_blog_seo.md",
+      "domain": "marketing",
+      "level": "specialist",
+      "reports_to": "ju_chief_marketing",
+      "outputs": ["title", "keywords", "draft_outline"]
+    },
+    {
+      "id": "ju_brand_guard",
+      "path": "knowledge/marketing/ju_brand_guard.md",
+      "domain": "marketing",
+      "level": "specialist",
+      "reports_to": "ju_chief_marketing",
+      "outputs": ["approved", "violations", "revised_copy"]
+    },
+    {
+      "id": "ju_shorts_planning",
+      "path": "knowledge/shorts/ju_shorts_planning.md",
+      "domain": "shorts",
+      "level": "specialist",
+      "reports_to": "ju_chief_marketing",
+      "children": ["ju_shorts_editing", "ju_visual_director"],
+      "outputs": ["topic", "hook", "overlay_outline"]
+    },
+    {
+      "id": "ju_shorts_editing",
+      "path": "knowledge/shorts/ju_shorts_editing.md",
+      "domain": "shorts",
+      "level": "specialist",
+      "reports_to": "ju_shorts_planning",
+      "outputs": ["overlay_lines", "tone_notes"]
+    },
+    {
+      "id": "ju_visual_director",
+      "path": "knowledge/shorts/ju_visual_director.md",
+      "domain": "shorts",
+      "level": "specialist",
+      "reports_to": "ju_shorts_planning",
+      "outputs": ["image_prompts", "visual_stage_notes"]
+    }
+  ],
+  "templates": {
+    "handoff": "templates/handoff.json",
+    "synthesis": "templates/synthesis.json",
+    "daily_report": "templates/daily_report.json",
+    "shorts_plan": "templates/shorts_plan.json",
+    "brand_guard": "templates/brand_guard.json"
+  },
+  "examples": {
+    "handoff": [
+      "examples/handoff/estimate_ab_ready.json",
+      "examples/handoff/field_scope_change.json",
+      "examples/handoff/marketing_pipeline.json"
+    ],
+    "synthesis": [
+      "examples/synthesis/hq_weekly_priorities.json"
+    ],
+    "daily_report": [
+      "examples/daily_report/framing_clear_day.json",
+      "examples/daily_report/roof_delay_rain.json"
+    ],
+    "shorts_plan": [
+      "examples/shorts/insulation_myth.json",
+      "examples/shorts/build_sequence.json"
+    ],
+    "brand_guard": [
+      "examples/brand_guard/reject_lowest_price.json",
+      "examples/brand_guard/approve_process_copy.json"
+    ]
+  },
+  "schemas": {
+    "handoff": "schemas/handoff.schema.json",
+    "synthesis": "schemas/synthesis.schema.json",
+    "daily_report": "schemas/daily_report.schema.json",
+    "shorts_plan": "schemas/shorts_plan.schema.json",
+    "brand_guard": "schemas/brand_guard.schema.json"
+  },
+  "required_sections_by_level": {
+    "hq": [["역할"], ["입력"], ["출력"]],
+    "chief": [["산출", "본부장 산출물"]],
+    "specialist": [["산출", "필드", "슬롯 A / B", "구조", "규칙", "5컷 공정 매칭"]],
+    "guide": []
+  }
+}

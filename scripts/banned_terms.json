@@ -1,0 +1,137 @@
+{
+  "description": "JU Housing brand/visual banned terms for knowledge + marketing copy scans. Synced with knowledge/shared/ju_company_core.md and ju_visual_rules.md.",
+  "terms": [
+    {
+      "id": "hanok",
+      "pattern": "한옥",
+      "severity": "error",
+      "note": "금지 건축 스타일",
+      "allow_in_paths": [
+        "knowledge/shared/ju_company_core.md",
+        "knowledge/shared/ju_visual_rules.md",
+        "knowledge/marketing/ju_brand_guard.md",
+        "knowledge/shorts/ju_visual_director.md",
+        "scripts/banned_terms.json",
+        "README.md",
+        "AGENTS.md"
+      ]
+    },
+    {
+      "id": "traditional_korean_arch",
+      "pattern": "전통\\s*한국\\s*건축",
+      "severity": "error",
+      "note": "금지 건축 스타일",
+      "allow_in_paths": [
+        "knowledge/shared/ju_company_core.md",
+        "knowledge/shared/ju_visual_rules.md",
+        "knowledge/marketing/ju_brand_guard.md",
+        "scripts/banned_terms.json",
+        "README.md"
+      ]
+    },
+    {
+      "id": "heavy_timber",
+      "pattern": "중목(\\s*주택)?",
+      "severity": "error",
+      "note": "금지 건축 스타일",
+      "allow_in_paths": [
+        "knowledge/shared/ju_company_core.md",
+        "knowledge/shared/ju_visual_rules.md",
+        "scripts/banned_terms.json",
+        "README.md"
+      ]
+    },
+    {
+      "id": "post_and_beam",
+      "pattern": "포스트\\s*&?\\s*앤?\\s*빔|포스트앤빔",
+      "severity": "error",
+      "note": "금지 건축 스타일",
+      "allow_in_paths": [
+        "knowledge/shared/ju_company_core.md",
+        "knowledge/shared/ju_visual_rules.md",
+        "scripts/banned_terms.json",
+        "README.md"
+      ]
+    },
+    {
+      "id": "log_cabin",
+      "pattern": "통나무집",
+      "severity": "error",
+      "note": "금지 건축 스타일",
+      "allow_in_paths": [
+        "knowledge/shared/ju_company_core.md",
+        "knowledge/shared/ju_visual_rules.md",
+        "scripts/banned_terms.json",
+        "README.md"
+      ]
+    },
+    {
+      "id": "minka",
+      "pattern": "미inka|民家",
+      "severity": "error",
+      "note": "금지 건축 스타일",
+      "allow_in_paths": [
+        "knowledge/shared/ju_visual_rules.md",
+        "scripts/banned_terms.json"
+      ]
+    },
+    {
+      "id": "half_timber",
+      "pattern": "하프\\s*팀버",
+      "severity": "error",
+      "note": "금지 건축 스타일",
+      "allow_in_paths": [
+        "knowledge/shared/ju_visual_rules.md",
+        "scripts/banned_terms.json"
+      ]
+    },
+    {
+      "id": "lowest_price",
+      "pattern": "최저가",
+      "severity": "error",
+      "note": "과장·가격 약속 금지",
+      "allow_in_paths": [
+        "knowledge/shared/ju_company_core.md",
+        "knowledge/marketing/ju_brand_guard.md",
+        "knowledge/estimate/ju_estimate_guide.md",
+        "scripts/banned_terms.json",
+        "README.md"
+      ]
+    },
+    {
+      "id": "percent_savings_claim",
+      "pattern": "\\d+\\s*%\\s*절약",
+      "severity": "error",
+      "note": "검증 없는 절약률 금지",
+      "allow_in_paths": [
+        "knowledge/shared/ju_company_core.md",
+        "knowledge/marketing/ju_brand_guard.md",
+        "scripts/banned_terms.json",
+        "README.md"
+      ]
+    },
+    {
+      "id": "unconditional_promise",
+      "pattern": "무조건",
+      "severity": "warning",
+      "note": "무조건 약속 지양 — 문맥 확인",
+      "allow_in_paths": [
+        "knowledge/marketing/ju_brand_guard.md",
+        "scripts/banned_terms.json",
+        "README.md"
+      ]
+    },
+    {
+      "id": "stud_2x4",
+      "pattern": "2x4",
+      "severity": "error",
+      "note": "표준 벽체 스터드는 2x6 — 2x4 표기 금지",
+      "allow_in_paths": [
+        "scripts/banned_terms.json",
+        "scripts/check_knowledge.py",
+        "AGENTS.md",
+        "examples/README.md"
+      ]
+    }
+  ]
+}

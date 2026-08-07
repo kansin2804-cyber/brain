@@ -1,0 +1,38 @@
+{
+  "version": "1.0",
+  "artifact": "SHORTS_PLAN",
+  "from_agent": "ju_shorts_planning",
+  "topic": "목조는 춥다?",
+  "hook": "목조는 정말 추울까?",
+  "overlay_outline": [
+    "목조는 춥다?",
+    "구조만의 문제 아님",
+    "단열·기밀이 핵심",
+    "난방비까지 설계",
+    "제이유 하우징"
+  ],
+  "overlay_lines": [
+    "목조는 춥다?",
+    "구조만의 문제 아님",
+    "단열·기밀이 핵심",
+    "난방비까지 설계",
+    "제이유 하우징"
+  ],
+  "tone_notes": "짧고 단정, 과장 금지",
+  "image_prompts": [
+    "North American light-frame wood house under construction, 2x6 studs and OSB sheathing only, Korean suburban site, no text",
+    "Insulation batts between wood studs, air barrier detail, Korean crew, no text overlay",
+    "Roof deck OSB with underlayment rolls, no finished metal yet, no text",
+    "Standing-seam metal roof installation on modern wood-frame house, Korea, no text",
+    "Finished modern suburban house with fiber-cement or ceramic siding, standing-seam roof, Korea, no text"
+  ],
+  "visual_stage_notes": [
+    "framing",
+    "insulation_or_roof_deck",
+    "underlayment",
+    "metal_roof",
+    "finished_exterior_or_interior"
+  ],
+  "brand_check_required": true,
+  "created_at": "2026-01-01T00:00:00+09:00"
+}
