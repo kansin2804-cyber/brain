@@ -1,7 +1,7 @@
 # JU 비주얼 규칙 (쇼츠·블로그·Imagen 공통)
 
 ## 시공 표현
-- 북미식 경량 목조: 2x4, OSB, platform framing
+- 북미식 경량 목조: 2x6, OSB, platform framing
 - 외벽: 세라믹·섬유시멘트 사이딩
 - 지붕: 징크·스탠딩심 메탈
 
