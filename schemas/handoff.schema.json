@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://juhousing.local/schemas/handoff.schema.json",
+  "title": "HANDOFF_JSON",
+  "type": "object",
+  "required": [
+    "version",
+    "artifact",
+    "from_agent",
+    "to_agent",
+    "domain",
+    "summary",
+    "payload",
+    "priority"
+  ],
+  "properties": {
+    "version": { "type": "string" },
+    "artifact": { "const": "HANDOFF_JSON" },
+    "from_agent": { "type": "string" },
+    "to_agent": { "type": "string" },
+    "domain": {
+      "type": "string",
+      "enum": ["estimate", "field", "marketing", "shorts", "core"]
+    },
+    "site_id": { "type": ["string", "null"] },
+    "customer_id": { "type": ["string", "null"] },
+    "stage": { "type": "string" },
+    "summary": { "type": "string", "minLength": 1 },
+    "payload": { "type": "object" },
+    "cross_domain_flags": { "type": "object" },
+    "priority": {
+      "type": "string",
+      "enum": ["low", "normal", "high", "urgent"]
+    },
+    "created_at": { "type": "string" }
+  },
+  "additionalProperties": true
+}

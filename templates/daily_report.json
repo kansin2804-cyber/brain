@@ -1,0 +1,27 @@
+{
+  "version": "1.0",
+  "artifact": "DAILY_REPORT",
+  "from_agent": "ju_daily_report",
+  "to_agent": "ju_chief_field",
+  "site_name": "양주 예시현장",
+  "date": "2026-01-01",
+  "weather": "맑음",
+  "temperature_c": 5,
+  "trade": "골조",
+  "crew": {
+    "direct": 4,
+    "subcontractor": 2
+  },
+  "work_today": "2층 스터드·OSB 시스 시공",
+  "materials": {
+    "received": ["2x6 KD SPF"],
+    "used": ["OSB 9mm"]
+  },
+  "issues": [],
+  "safety": ["안전모·안전대 착용 확인"],
+  "plan_tomorrow": "지붕 데크 착수",
+  "photos": ["framing_front.jpg"],
+  "daily_report": "양주 현장 — 2층 골조 시공. 이슈 없음. 명일 지붕 데크.",
+  "notify_estimate_chief": false,
+  "created_at": "2026-01-01T00:00:00+09:00"
+}

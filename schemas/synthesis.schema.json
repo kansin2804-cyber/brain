@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://juhousing.local/schemas/synthesis.schema.json",
+  "title": "SYNTHESIS_JSON",
+  "type": "object",
+  "required": [
+    "version",
+    "artifact",
+    "from_agent",
+    "priority_actions",
+    "status"
+  ],
+  "properties": {
+    "version": { "type": "string" },
+    "artifact": { "const": "SYNTHESIS_JSON" },
+    "from_agent": { "const": "ju_orchestrator" },
+    "domains_merged": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "site_id": { "type": ["string", "null"] },
+    "customer_id": { "type": ["string", "null"] },
+    "common_denominator": { "type": "object" },
+    "priority_actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["who", "what", "when"],
+        "properties": {
+          "who": { "type": "string" },
+          "what": { "type": "string" },
+          "when": { "type": "string" },
+          "why": { "type": "string" }
+        }
+      }
+    },
+    "conflicts": { "type": "array" },
+    "status": {
+      "type": "string",
+      "enum": ["ok", "needs_rework", "blocked"]
+    },
+    "created_at": { "type": "string" }
+  },
+  "additionalProperties": true
+}

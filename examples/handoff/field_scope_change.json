@@ -1,0 +1,28 @@
+{
+  "version": "1.0",
+  "artifact": "HANDOFF_JSON",
+  "from_agent": "ju_chief_field",
+  "to_agent": "ju_orchestrator",
+  "domain": "field",
+  "site_id": "gapyeong-seorak-40",
+  "customer_id": "cust-park-2506",
+  "stage": "framing",
+  "summary": "가평 설악 40평 — 2층 골조 중 옹벽 보강 이슈. 견적 범위 변경 가능성",
+  "payload": {
+    "site_status": "2층 2x6 스터드·OSB 진행 중. 북측 사면 우기 후 토압 증가 징후.",
+    "schedule": "금주 골조 마감 목표였으나 옹벽 보강 검토로 2~3일 지연 가능",
+    "quality_flags": ["북측 사면 배수·옹벽 재검토 필요"],
+    "daily_highlight": "출역 직영 4 / 협력 3. 자재 2x6 KD SPF 입고 완료.",
+    "asks_from_peers": [
+      "estimate-chief: 옹벽 보강 라인 별도 견적 반영 여부",
+      "marketing: 골조 사진 촬영은 보강 방침 확정 후로 연기"
+    ]
+  },
+  "cross_domain_flags": {
+    "affects_field": true,
+    "affects_marketing": true,
+    "notes": "고객 약속(입주 일정)과 마케팅 콘텐츠 일정 충돌 가능 — HQ 조율 필요"
+  },
+  "priority": "urgent",
+  "created_at": "2026-08-07T17:30:00+09:00"
+}
