@@ -30,3 +30,4 @@ adb -s "$DEVICE" shell cat /sdcard/shiftsleep-ui.xml | tr '>' '>\n' | \
   grep -E '교대수면|시작하기|병원|오늘|근무표|설정|면책|취침|기상' | head -40
 
 echo "Smoke dump complete. Manually tap through: 시작하기 → 홈 플랜 → 근무표 변경 → 설정 알림."
+echo "Windows: .\\scripts\\smoke.ps1  |  Checklist: Agent Store docs/shift-sleep-laptop-smoke.md"
