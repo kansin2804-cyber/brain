@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">교대수면</string>
+    <string name="disclaimer_short">의료·진단·치료가 아닌 개인 수면 일정 가이드입니다.</string>
+    <string name="disclaimer_long">이 앱은 의료기기·진단·치료 앱이 아닙니다. 교대근무에 맞춘 취침·기상·카페인 시각 가이드만 제공합니다. 수면 장애나 건강 문제가 있으면 의료 전문가와 상담하세요. 근무표 공유·병동 일정 앱을 대체하지 않습니다.</string>
+</resources>
