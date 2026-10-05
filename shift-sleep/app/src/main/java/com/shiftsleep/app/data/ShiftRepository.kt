@@ -26,6 +26,15 @@ class ShiftRepository(
         return created
     }
 
+    /** Starts 7-day trial once (idempotent). */
+    suspend fun startTrialIfNeeded(): UserPrefsEntity {
+        val prefs = ensurePrefs()
+        if (prefs.trialStartedAtMs > 0L) return prefs
+        val next = prefs.copy(trialStartedAtMs = System.currentTimeMillis(), trialUsed = true)
+        savePrefs(next)
+        return next
+    }
+
     suspend fun savePrefs(prefs: UserPrefsEntity) {
         db.prefsDao().upsert(prefs)
     }

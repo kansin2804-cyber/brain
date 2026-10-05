@@ -3,7 +3,11 @@ package com.shiftsleep.app.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.shiftsleep.app.billing.Entitlement
+import com.shiftsleep.app.billing.EntitlementStatus
 import com.shiftsleep.app.data.ShiftRepository
+import com.shiftsleep.app.data.UserPrefsEntity
+import com.shiftsleep.app.ui.paywall.entitlementLabel
 import com.shiftsleep.plan.DayShift
 import com.shiftsleep.plan.ShiftType
 import com.shiftsleep.plan.SleepPlan
@@ -26,6 +30,8 @@ data class HomeUiState(
     val week: List<Pair<DayShift?, SleepPlan?>> = emptyList(),
     val showTip: Boolean = false,
     val transitionHint: String? = null,
+    val entitlementLabel: String = "",
+    val entitlementHint: String? = null,
 )
 
 class HomeViewModel(
@@ -41,7 +47,7 @@ class HomeViewModel(
                 repository.observePrefs(),
             ) { shifts, prefs -> shifts to prefs }
                 .collect { (shifts, prefs) ->
-                    refresh(shifts, prefs.homeTipDismissed)
+                    refresh(shifts, prefs)
                 }
         }
     }
@@ -53,7 +59,7 @@ class HomeViewModel(
         }
     }
 
-    private suspend fun refresh(shifts: List<DayShift>, tipDismissed: Boolean) {
+    private suspend fun refresh(shifts: List<DayShift>, prefs: UserPrefsEntity) {
         val today = LocalDate.now()
         val iso = DateTimeFormatter.ISO_LOCAL_DATE
         val todayStr = today.format(iso)
@@ -78,6 +84,7 @@ class HomeViewModel(
                 "전환일 · 오프→나이트: 카페인 컷오프를 근무 중반 이전으로 맞춰 보세요."
             else -> null
         }
+        val entitlement = Entitlement.evaluate(prefs)
         _state.value = HomeUiState(
             loading = false,
             todayLabel = "${today.monthValue}/${today.dayOfMonth} " +
@@ -85,9 +92,18 @@ class HomeViewModel(
             shiftLabel = day?.let { Templates.labelKo(it.type) } ?: "근무 미입력",
             plan = plan,
             week = week,
-            showTip = !tipDismissed,
+            showTip = !prefs.homeTipDismissed,
             transitionHint = transition,
+            entitlementLabel = entitlementLabel(entitlement),
+            entitlementHint = entitlementHomeHint(entitlement),
         )
+    }
+
+    private fun entitlementHomeHint(status: EntitlementStatus): String? = when {
+        status.isPro -> null
+        status.inTrial -> "체험 ${status.trialDaysLeft}일 · 설정에서 구독 확인"
+        status.source == "expired" -> "체험 종료 · 취침 알림만 · 설정에서 프로"
+        else -> null
     }
 
     companion object {

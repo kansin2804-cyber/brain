@@ -216,8 +216,9 @@ fun OnboardingScreen(
                                         replayTutorial = false,
                                     )
                                     repository.savePrefs(prefs)
+                                    repository.startTrialIfNeeded()
                                     repository.seedWeekIfEmpty(selected)
-                                    scheduler.rescheduleAll(repository, prefs)
+                                    scheduler.rescheduleAll(repository, repository.ensurePrefs())
                                     onFinished(selected)
                                 }
                             }

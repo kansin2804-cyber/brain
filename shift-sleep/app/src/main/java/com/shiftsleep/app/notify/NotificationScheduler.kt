@@ -37,15 +37,28 @@ class NotificationScheduler(private val context: Context) {
     suspend fun rescheduleAll(repo: ShiftRepository, prefs: UserPrefsEntity) {
         ensureChannel()
         cancelAll()
+        val entitlement = com.shiftsleep.app.billing.Entitlement.evaluate(prefs)
         val plans = repo.planWeek()
         plans.forEachIndexed { index, plan ->
-            schedulePlan(plan, prefs, index)
+            schedulePlan(plan, prefs, index, entitlement.canUseFullNotifications)
         }
     }
 
-    private fun schedulePlan(plan: SleepPlan, prefs: UserPrefsEntity, weekIndex: Int) {
+    private fun schedulePlan(
+        plan: SleepPlan,
+        prefs: UserPrefsEntity,
+        weekIndex: Int,
+        fullAccess: Boolean,
+    ) {
         val base = REQ_BASE + weekIndex * 10
-        if (prefs.notifySleep) {
+        // Free (expired): sleep notification only. Trial/Pro: respect user toggles.
+        val sleepOn = prefs.notifySleep
+        val wakeOn = prefs.notifyWake && fullAccess
+        val caffeineOn = prefs.notifyCaffeine && fullAccess
+        val windDownOn = prefs.notifyWindDown && fullAccess &&
+            plan.windDown != null && plan.windDownDate != null
+
+        if (sleepOn) {
             schedule(
                 base + 1,
                 plan.sleepStartDate,
@@ -54,7 +67,7 @@ class NotificationScheduler(private val context: Context) {
                 "권장 취침 ${plan.sleepStart.format()} — ${plan.reason}",
             )
         }
-        if (prefs.notifyWake) {
+        if (wakeOn) {
             schedule(
                 base + 2,
                 plan.sleepEndDate,
@@ -63,7 +76,7 @@ class NotificationScheduler(private val context: Context) {
                 "권장 기상 ${plan.sleepEnd.format()}",
             )
         }
-        if (prefs.notifyCaffeine) {
+        if (caffeineOn) {
             schedule(
                 base + 3,
                 plan.caffeineCutoffDate,
@@ -72,7 +85,7 @@ class NotificationScheduler(private val context: Context) {
                 "이제부터 카페인 줄이기 가이드 ${plan.caffeineCutoff.format()}",
             )
         }
-        if (prefs.notifyWindDown && plan.windDown != null && plan.windDownDate != null) {
+        if (windDownOn) {
             schedule(
                 base + 4,
                 plan.windDownDate!!,

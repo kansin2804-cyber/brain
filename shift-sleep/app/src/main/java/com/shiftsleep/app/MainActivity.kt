@@ -139,6 +139,7 @@ private fun ShiftSleepRoot(app: ShiftSleepApp) {
                 SettingsScreen(
                     repository = app.repository,
                     scheduler = app.notificationScheduler,
+                    billing = app.billingManager,
                 )
             }
         }

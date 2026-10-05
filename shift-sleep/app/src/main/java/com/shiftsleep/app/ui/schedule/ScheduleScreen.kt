@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -19,12 +20,15 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.shiftsleep.app.billing.Entitlement
 import com.shiftsleep.app.data.ShiftRepository
 import com.shiftsleep.app.notify.NotificationScheduler
 import com.shiftsleep.plan.DayShift
@@ -51,6 +55,19 @@ fun ScheduleScreen(
     val preset = prefs?.templatePreset?.let {
         runCatching { TemplatePreset.valueOf(it) }.getOrDefault(TemplatePreset.HOSPITAL_3SHIFT)
     } ?: TemplatePreset.HOSPITAL_3SHIFT
+    val entitlement = prefs?.let { Entitlement.evaluate(it) }
+    var showGate by remember { mutableStateOf(false) }
+
+    if (showGate) {
+        AlertDialog(
+            onDismissRequest = { showGate = false },
+            title = { Text("프로 기능") },
+            text = { Text("빠른 채우기는 체험/프로에서 사용할 수 있습니다. 설정에서 구독을 확인하세요.") },
+            confirmButton = {
+                TextButton(onClick = { showGate = false }) { Text("확인") }
+            },
+        )
+    }
 
     val types = when (preset) {
         TemplatePreset.FACTORY_12H -> listOf(
@@ -99,6 +116,10 @@ fun ScheduleScreen(
                 FilterChip(
                     selected = false,
                     onClick = {
+                        if (entitlement?.canUsePatternFill != true) {
+                            showGate = true
+                            return@FilterChip
+                        }
                         scope.launch {
                             repository.applyWeekPattern(pattern, preset)
                             scheduler.rescheduleAll(repository, repository.ensurePrefs())

@@ -31,12 +31,19 @@ APK: `app/build/outputs/apk/debug/app-debug.apk`
 - [x] 7일 근무·수면 요약
 - [x] 로컬 알림 (취침·기상 기본, 카페인·wind-down 선택)
 - [x] 면책 문구
-- [ ] Play Billing 실연동 (설정에 테스트 토글만)
+- [x] Play Billing + 로컬 7일 체험 (soft free)
 - [ ] Firebase Analytics
 
 ## 패키지
 
 `com.shiftsleep.app` — JU Housing 브랜드와 분리.
+
+## Play 구독 상품 ID
+
+- `shiftsleep_pro_monthly`
+- `shiftsleep_pro_yearly`
+
+Play Console에 동일 ID로 등록해야 구매 버튼이 활성화됩니다. 상세: Agent Store `shift-sleep-billing-v03.md`.
 
 ## 문서
 

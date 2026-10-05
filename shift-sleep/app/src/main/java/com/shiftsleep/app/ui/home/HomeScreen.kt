@@ -64,6 +64,14 @@ fun HomeScreen(vm: HomeViewModel) {
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+        if (state.entitlementHint != null) {
+            Spacer(Modifier.height(6.dp))
+            Text(
+                text = state.entitlementHint!!,
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.tertiary,
+            )
+        }
 
         if (state.showTip) {
             Spacer(Modifier.height(16.dp))

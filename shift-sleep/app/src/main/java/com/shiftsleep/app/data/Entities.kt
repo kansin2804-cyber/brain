@@ -51,9 +51,13 @@ data class UserPrefsEntity(
     val notifyCaffeine: Boolean = false,
     val notifyWindDown: Boolean = false,
     val trialUsed: Boolean = false,
+    /** Debug / license-tester style unlock (also used when Play Billing unavailable). */
     val proUnlocked: Boolean = false,
-    /** First-week tip banner on home. */
     val homeTipDismissed: Boolean = false,
-    /** When true, show in-app tutorial overlay again. */
     val replayTutorial: Boolean = false,
+    /** Epoch ms when 7-day trial started; 0 = not started. */
+    val trialStartedAtMs: Long = 0L,
+    /** True when Play Billing reports an active subscription. */
+    val subscriptionActive: Boolean = false,
+    val subscriptionProductId: String = "",
 )
