@@ -16,8 +16,9 @@
 
 ```bash
 export ANDROID_HOME=~/android-sdk   # 또는 local.properties sdk.dir
-./gradlew :plan_engine:test
+./gradlew :plan_engine:test :app:testDebugUnitTest
 ./gradlew :app:assembleDebug
+./scripts/smoke.sh   # 기기 연결 시
 ```
 
 APK: `app/build/outputs/apk/debug/app-debug.apk`
