@@ -158,8 +158,27 @@ adb -s $Device shell am force-stop com.shiftsleep.app 2>$null
 adb -s $Device shell pm clear com.shiftsleep.app 2>$null
 adb -s $Device shell am start -n com.shiftsleep.app/.MainActivity
 Start-Sleep -Seconds 3
-adb -s $Device shell uiautomator dump /sdcard/shiftsleep-ui.xml
-$xml = adb -s $Device shell cat /sdcard/shiftsleep-ui.xml
-$xml -split ">" | Select-String -Pattern "교대수면|시작하기|병원|오늘|근무표|설정|면책|취침|기상" | Select-Object -First 40
+
+# Confirm package is installed and focused (ASCII-only — avoid Korean regex/encoding issues)
+$pkg = adb -s $Device shell pm path com.shiftsleep.app 2>$null
+Write-Host "Installed package: $pkg"
+$focus = adb -s $Device shell dumpsys window 2>$null | Select-String "mCurrentFocus|mFocusedApp" | Select-Object -First 3
+Write-Host $focus
+
+adb -s $Device shell uiautomator dump /sdcard/shiftsleep-ui.xml 2>$null
+adb -s $Device pull /sdcard/shiftsleep-ui.xml "$Root\shiftsleep-ui.xml" 2>$null | Out-Null
+if (Test-Path "$Root\shiftsleep-ui.xml") {
+    $ui = Get-Content "$Root\shiftsleep-ui.xml" -Raw -ErrorAction SilentlyContinue
+    # SimpleContains (not Select-String regex) for Korean text
+    $needles = @("교대수면", "시작하기", "병원", "오늘", "근무표", "설정", "취침", "기상")
+    foreach ($n in $needles) {
+        if ($ui -and $ui.Contains($n)) { Write-Host "UI has: $n" -ForegroundColor Green }
+    }
+}
+
 Write-Host ""
-Write-Host "Done. Manual: Start -> Home plan -> Schedule -> Settings"
+Write-Host "If phone shows Wooden Calculator (ju-calc), Android Studio opened the WRONG project." -ForegroundColor Yellow
+Write-Host "ShiftSleep package is: com.shiftsleep.app  (launcher name: 교대수면)"
+Write-Host "Open in Studio: File > Open > C:\Users\kansi\Documents\brain\shift-sleep"
+Write-Host "Or on phone: find app icon '교대수면' (not 목조계산기)."
+Write-Host "Manual check: Start -> Home plan -> Schedule -> Settings"
