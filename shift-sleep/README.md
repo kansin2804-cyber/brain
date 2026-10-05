@@ -32,7 +32,8 @@ APK: `app/build/outputs/apk/debug/app-debug.apk`
 - [x] 로컬 알림 (취침·기상 기본, 카페인·wind-down 선택)
 - [x] 면책 문구
 - [x] Play Billing + 로컬 7일 체험 (soft free)
-- [ ] Firebase Analytics
+- [x] Analytics/Crashlytics 스캐폴딩 (google-services.json 선택)
+- [ ] Play Console 상품 + Firebase 프로젝트 (사용자)
 
 ## 패키지
 
@@ -43,7 +44,8 @@ APK: `app/build/outputs/apk/debug/app-debug.apk`
 - `shiftsleep_pro_monthly`
 - `shiftsleep_pro_yearly`
 
-Play Console에 동일 ID로 등록해야 구매 버튼이 활성화됩니다. 상세: Agent Store `shift-sleep-billing-v03.md`.
+Play Console에 동일 ID로 등록해야 구매 버튼이 활성화됩니다.  
+Analytics: `app/google-services.json.example` 참고 · Agent Store `shift-sleep-analytics-v04.md` / `shift-sleep-billing-v03.md`.
 
 ## 문서
 

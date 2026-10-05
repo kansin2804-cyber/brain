@@ -19,6 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.shiftsleep.app.BuildConfig
+import com.shiftsleep.app.analytics.AnalyticsEvents
+import com.shiftsleep.app.analytics.AnalyticsParams
+import com.shiftsleep.app.analytics.AppAnalytics
 import com.shiftsleep.app.billing.BillingManager
 import com.shiftsleep.app.billing.BillingProducts
 import com.shiftsleep.app.billing.EntitlementStatus
@@ -73,6 +76,10 @@ fun PaywallContent(
             if (available && products.isNotEmpty()) {
                 Button(
                     onClick = {
+                        AppAnalytics.event(
+                            AnalyticsEvents.PURCHASE_CLICK,
+                            mapOf(AnalyticsParams.PRODUCT_ID to BillingProducts.MONTHLY),
+                        )
                         activity?.let { billing.launchPurchase(it, BillingProducts.MONTHLY) }
                     },
                     modifier = Modifier.fillMaxWidth(),
@@ -80,6 +87,10 @@ fun PaywallContent(
                 Spacer(Modifier.height(8.dp))
                 Button(
                     onClick = {
+                        AppAnalytics.event(
+                            AnalyticsEvents.PURCHASE_CLICK,
+                            mapOf(AnalyticsParams.PRODUCT_ID to BillingProducts.YEARLY),
+                        )
                         activity?.let { billing.launchPurchase(it, BillingProducts.YEARLY) }
                     },
                     modifier = Modifier.fillMaxWidth(),
@@ -111,6 +122,7 @@ fun PaywallContent(
                             val next = prefs.copy(proUnlocked = true)
                             repository.savePrefs(next)
                             scheduler.rescheduleAll(repository, next)
+                            AppAnalytics.event(AnalyticsEvents.PRO_DEBUG_UNLOCK)
                             onClose()
                         }
                     },
@@ -142,3 +154,4 @@ fun entitlementLabel(status: EntitlementStatus): String = when {
     status.inTrial -> "체험 ${status.trialDaysLeft}일"
     else -> "무료"
 }
+

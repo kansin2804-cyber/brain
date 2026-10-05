@@ -1,6 +1,8 @@
 package com.shiftsleep.app
 
 import android.app.Application
+import com.shiftsleep.app.analytics.AnalyticsEvents
+import com.shiftsleep.app.analytics.AppAnalytics
 import com.shiftsleep.app.billing.BillingManager
 import com.shiftsleep.app.data.AppDatabase
 import com.shiftsleep.app.data.ShiftRepository
@@ -16,6 +18,8 @@ class ShiftSleepApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        AppAnalytics.init(this)
+        AppAnalytics.event(AnalyticsEvents.APP_OPEN)
         repository = ShiftRepository(AppDatabase.get(this))
         notificationScheduler = NotificationScheduler(this).also { it.ensureChannel() }
         billingManager = BillingManager(this, repository).also { it.start() }

@@ -3,6 +3,8 @@ package com.shiftsleep.app.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.shiftsleep.app.analytics.AnalyticsEvents
+import com.shiftsleep.app.analytics.AppAnalytics
 import com.shiftsleep.app.billing.Entitlement
 import com.shiftsleep.app.billing.EntitlementStatus
 import com.shiftsleep.app.data.ShiftRepository
@@ -56,6 +58,7 @@ class HomeViewModel(
         viewModelScope.launch {
             val prefs = repository.ensurePrefs().copy(homeTipDismissed = true)
             repository.savePrefs(prefs)
+            AppAnalytics.event(AnalyticsEvents.TIP_DISMISSED)
         }
     }
 

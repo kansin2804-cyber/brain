@@ -36,6 +36,9 @@ import com.shiftsleep.app.data.ShiftRepository
 import com.shiftsleep.app.notify.NotificationScheduler
 import com.shiftsleep.plan.TemplatePreset
 import com.shiftsleep.plan.Templates
+import com.shiftsleep.app.analytics.AnalyticsEvents
+import com.shiftsleep.app.analytics.AnalyticsParams
+import com.shiftsleep.app.analytics.AppAnalytics
 import kotlinx.coroutines.launch
 
 private data class TutorialPage(
@@ -217,6 +220,11 @@ fun OnboardingScreen(
                                     )
                                     repository.savePrefs(prefs)
                                     repository.startTrialIfNeeded()
+                                    AppAnalytics.event(
+                                        AnalyticsEvents.ONBOARDING_COMPLETE,
+                                        mapOf(AnalyticsParams.PRESET to selected.name),
+                                    )
+                                    AppAnalytics.event(AnalyticsEvents.TRIAL_STARTED)
                                     repository.seedWeekIfEmpty(selected)
                                     scheduler.rescheduleAll(repository, repository.ensurePrefs())
                                     onFinished(selected)

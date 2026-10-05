@@ -28,6 +28,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.shiftsleep.app.analytics.AnalyticsEvents
+import com.shiftsleep.app.analytics.AnalyticsParams
+import com.shiftsleep.app.analytics.AppAnalytics
 import com.shiftsleep.app.billing.Entitlement
 import com.shiftsleep.app.data.ShiftRepository
 import com.shiftsleep.app.notify.NotificationScheduler
@@ -123,6 +126,10 @@ fun ScheduleScreen(
                         scope.launch {
                             repository.applyWeekPattern(pattern, preset)
                             scheduler.rescheduleAll(repository, repository.ensurePrefs())
+                            AppAnalytics.event(
+                                AnalyticsEvents.PATTERN_FILL,
+                                mapOf(AnalyticsParams.PATTERN to label),
+                            )
                         }
                     },
                     label = { Text(label) },
@@ -170,6 +177,10 @@ fun ScheduleScreen(
                                     repository.upsertShift(DayShift(dateStr, type, hours))
                                     val p = repository.ensurePrefs()
                                     scheduler.rescheduleAll(repository, p)
+                                    AppAnalytics.event(
+                                        AnalyticsEvents.SHIFT_UPSERTED,
+                                        mapOf(AnalyticsParams.SOURCE to type.name),
+                                    )
                                 }
                             },
                             label = { Text(Templates.labelKo(type)) },

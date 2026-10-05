@@ -26,6 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shiftsleep.app.R
+import com.shiftsleep.app.analytics.AnalyticsEvents
+import com.shiftsleep.app.analytics.AppAnalytics
 import com.shiftsleep.app.billing.BillingManager
 import com.shiftsleep.app.billing.Entitlement
 import com.shiftsleep.app.data.ShiftRepository
@@ -96,7 +98,10 @@ fun SettingsScreen(
         )
         Spacer(Modifier.height(8.dp))
         OutlinedButton(
-            onClick = { showPaywall = true },
+            onClick = {
+                showPaywall = true
+                AppAnalytics.event(AnalyticsEvents.PAYWALL_OPEN)
+            },
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(if (entitlement.isPro) "구독 관리" else "프로 구독 / 체험 안내")
@@ -106,7 +111,10 @@ fun SettingsScreen(
         Text("도움말", style = MaterialTheme.typography.titleLarge)
         Spacer(Modifier.height(8.dp))
         OutlinedButton(
-            onClick = { showTutorial = true },
+            onClick = {
+                showTutorial = true
+                AppAnalytics.event(AnalyticsEvents.TUTORIAL_REPLAY)
+            },
             modifier = Modifier.fillMaxWidth(),
         ) { Text("사용 튜토리얼 다시 보기") }
         Spacer(Modifier.height(8.dp))
@@ -197,7 +205,7 @@ fun SettingsScreen(
         )
         Spacer(Modifier.height(16.dp))
         Text(
-            "버전 0.3.0 · Play Billing + 7일 체험",
+            "버전 0.4.0 · Analytics 스캐폴딩 + Billing",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )

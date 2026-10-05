@@ -5,6 +5,9 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
+val googleServicesFile = file("google-services.json")
+val firebaseEnabled = googleServicesFile.exists()
+
 android {
     namespace = "com.shiftsleep.app"
     compileSdk = 35
@@ -13,9 +16,10 @@ android {
         applicationId = "com.shiftsleep.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 3
-        versionName = "0.3.0"
+        versionCode = 4
+        versionName = "0.4.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("boolean", "FIREBASE_ENABLED", firebaseEnabled.toString())
     }
 
     buildTypes {
@@ -76,6 +80,12 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
     implementation("com.android.billingclient:billing-ktx:7.1.1")
 
+    // Firebase: compiles always; google-services plugin applies only when
+    // app/google-services.json is present (see bottom of this file).
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
+
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
     testImplementation("androidx.room:room-runtime:2.6.1")
@@ -83,4 +93,10 @@ dependencies {
     testImplementation("androidx.test:core:1.6.1")
     testImplementation("androidx.arch.core:core-testing:2.2.0")
     testImplementation("org.robolectric:robolectric:4.14.1")
+}
+
+// Apply only when Console JSON is present so CI/local builds stay green without Firebase setup.
+if (firebaseEnabled) {
+    apply(plugin = "com.google.gms.google-services")
+    apply(plugin = "com.google.firebase.crashlytics")
 }

@@ -13,4 +13,5 @@
 *.jks
 *.keystore
 key.properties
+google-services.json
 .kotlin/
