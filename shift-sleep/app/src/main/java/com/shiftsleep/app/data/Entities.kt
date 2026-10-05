@@ -52,4 +52,8 @@ data class UserPrefsEntity(
     val notifyWindDown: Boolean = false,
     val trialUsed: Boolean = false,
     val proUnlocked: Boolean = false,
+    /** First-week tip banner on home. */
+    val homeTipDismissed: Boolean = false,
+    /** When true, show in-app tutorial overlay again. */
+    val replayTutorial: Boolean = false,
 )

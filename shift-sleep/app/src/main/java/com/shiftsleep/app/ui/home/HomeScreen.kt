@@ -16,6 +16,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -63,6 +64,43 @@ fun HomeScreen(vm: HomeViewModel) {
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+
+        if (state.showTip) {
+            Spacer(Modifier.height(16.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(14.dp))
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .padding(14.dp),
+            ) {
+                Text("처음이세요?", style = MaterialTheme.typography.titleLarge)
+                Spacer(Modifier.height(6.dp))
+                Text(
+                    "1) 아래 플랜 확인 → 2) ‘근무표’에서 실제 듀티로 수정 → 3) 알림은 설정에서 조절. 마이듀티를 대체하지 않습니다.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                TextButton(onClick = { vm.dismissTip() }) {
+                    Text("알겠어요")
+                }
+            }
+        }
+
+        state.transitionHint?.let { hint ->
+            Spacer(Modifier.height(14.dp))
+            Text(
+                text = hint,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.secondary,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(MaterialTheme.colorScheme.surface)
+                    .padding(14.dp),
+            )
+        }
+
         Spacer(Modifier.height(20.dp))
 
         val plan = state.plan
@@ -70,6 +108,12 @@ fun HomeScreen(vm: HomeViewModel) {
             Text(
                 "이번 주 근무를 입력하면 오늘의 취침·기상 플랜이 나타납니다.",
                 style = MaterialTheme.typography.headlineMedium,
+            )
+            Spacer(Modifier.height(8.dp))
+            Text(
+                "하단 ‘근무표’ 탭에서 오늘 듀티를 눌러 주세요.",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         } else {
             Text(
@@ -89,6 +133,12 @@ fun HomeScreen(vm: HomeViewModel) {
             Spacer(Modifier.height(10.dp))
             PlanRow("카페인 끊기", plan.caffeineCutoff.format(), plan.caffeineCutoffDate)
             Spacer(Modifier.height(16.dp))
+            Text(
+                text = "왜 이 시간인가요?",
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.primary,
+            )
+            Spacer(Modifier.height(4.dp))
             Text(
                 text = plan.reason,
                 style = MaterialTheme.typography.bodyLarge,

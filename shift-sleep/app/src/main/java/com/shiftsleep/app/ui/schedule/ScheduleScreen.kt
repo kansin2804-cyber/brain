@@ -74,6 +74,40 @@ fun ScheduleScreen(
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+        Spacer(Modifier.height(12.dp))
+        Text("빠른 채우기", style = MaterialTheme.typography.titleLarge)
+        Spacer(Modifier.height(6.dp))
+        Text(
+            "이번 주(월~일)를 한 번에 채웁니다. 나중에 날짜별로 수정하세요.",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Spacer(Modifier.height(8.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            val patterns = listOf(
+                "기본" to repository.defaultPattern(preset),
+                "D-D-N-Off" to listOf(
+                    ShiftType.DAY, ShiftType.DAY, ShiftType.NIGHT, ShiftType.OFF,
+                    ShiftType.DAY, ShiftType.EVENING, ShiftType.OFF,
+                ),
+                "나이트 연속" to listOf(
+                    ShiftType.NIGHT, ShiftType.NIGHT, ShiftType.NIGHT, ShiftType.OFF,
+                    ShiftType.OFF, ShiftType.DAY, ShiftType.DAY,
+                ),
+            )
+            patterns.forEach { (label, pattern) ->
+                FilterChip(
+                    selected = false,
+                    onClick = {
+                        scope.launch {
+                            repository.applyWeekPattern(pattern, preset)
+                            scheduler.rescheduleAll(repository, repository.ensurePrefs())
+                        }
+                    },
+                    label = { Text(label) },
+                )
+            }
+        }
         Spacer(Modifier.height(20.dp))
 
         (0..6).forEach { offset ->

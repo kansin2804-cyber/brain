@@ -50,37 +50,48 @@ class ShiftRepository(
     }
 
     suspend fun seedWeekIfEmpty(preset: TemplatePreset) {
-        val today = LocalDate.now()
-        val start = today.with(java.time.DayOfWeek.MONDAY)
         val existing = db.shiftDao().getAll()
         if (existing.isNotEmpty()) return
-        val pattern = when (preset) {
-            TemplatePreset.HOSPITAL_3SHIFT -> listOf(
-                com.shiftsleep.plan.ShiftType.DAY,
-                com.shiftsleep.plan.ShiftType.DAY,
-                com.shiftsleep.plan.ShiftType.EVENING,
-                com.shiftsleep.plan.ShiftType.EVENING,
-                com.shiftsleep.plan.ShiftType.NIGHT,
-                com.shiftsleep.plan.ShiftType.OFF,
-                com.shiftsleep.plan.ShiftType.OFF,
-            )
-            TemplatePreset.FACTORY_12H -> listOf(
-                com.shiftsleep.plan.ShiftType.DAY,
-                com.shiftsleep.plan.ShiftType.DAY,
-                com.shiftsleep.plan.ShiftType.NIGHT,
-                com.shiftsleep.plan.ShiftType.NIGHT,
-                com.shiftsleep.plan.ShiftType.OFF,
-                com.shiftsleep.plan.ShiftType.OFF,
-                com.shiftsleep.plan.ShiftType.OFF,
-            )
-            TemplatePreset.CUSTOM -> List(7) { com.shiftsleep.plan.ShiftType.OFF }
-        }
+        applyWeekPattern(defaultPattern(preset), preset)
+    }
+
+    /** Overwrites this week's Mon–Sun with a 7-day pattern (local only). */
+    suspend fun applyWeekPattern(
+        pattern: List<com.shiftsleep.plan.ShiftType>,
+        preset: TemplatePreset? = null,
+        anchor: LocalDate = LocalDate.now(),
+    ) {
+        require(pattern.size == 7) { "pattern must be 7 days" }
+        val resolved = preset ?: TemplatePreset.valueOf(ensurePrefs().templatePreset)
+        val start = anchor.with(java.time.DayOfWeek.MONDAY)
         val entities = pattern.mapIndexed { index, type ->
             val date = start.plusDays(index.toLong()).format(iso)
-            val hours = Templates.defaultHours(type, preset)
+            val hours = Templates.defaultHours(type, resolved)
             ShiftEntity.from(DayShift(date, type, hours))
         }
         db.shiftDao().upsertAll(entities)
+    }
+
+    fun defaultPattern(preset: TemplatePreset): List<com.shiftsleep.plan.ShiftType> = when (preset) {
+        TemplatePreset.HOSPITAL_3SHIFT -> listOf(
+            com.shiftsleep.plan.ShiftType.DAY,
+            com.shiftsleep.plan.ShiftType.DAY,
+            com.shiftsleep.plan.ShiftType.EVENING,
+            com.shiftsleep.plan.ShiftType.EVENING,
+            com.shiftsleep.plan.ShiftType.NIGHT,
+            com.shiftsleep.plan.ShiftType.OFF,
+            com.shiftsleep.plan.ShiftType.OFF,
+        )
+        TemplatePreset.FACTORY_12H -> listOf(
+            com.shiftsleep.plan.ShiftType.DAY,
+            com.shiftsleep.plan.ShiftType.DAY,
+            com.shiftsleep.plan.ShiftType.NIGHT,
+            com.shiftsleep.plan.ShiftType.NIGHT,
+            com.shiftsleep.plan.ShiftType.OFF,
+            com.shiftsleep.plan.ShiftType.OFF,
+            com.shiftsleep.plan.ShiftType.OFF,
+        )
+        TemplatePreset.CUSTOM -> List(7) { com.shiftsleep.plan.ShiftType.OFF }
     }
 
     suspend fun planForDate(date: String): SleepPlan? {
